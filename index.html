@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>JAEBEASTY Cyber Lab v7</title>
+<title>JAEBEASTY Cyber Lab v8</title>
 <meta name="theme-color" content="#0b0a1a">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1429,6 +1429,216 @@ html[data-look="bento"] .opt.no .k{background:var(--no);color:#fff}
 .books-list{display:flex;flex-direction:column;gap:.5rem;margin-top:.2rem}
 .books-list div{font-size:.82rem;color:var(--text-2);line-height:1.5}
 .books-list code{font-family:var(--mono);font-size:.76rem;background:var(--surface-2);padding:.1rem .3rem;border-radius:var(--r-xs)}
+
+/* ═══════════ V8 · SIDEBAR NAVIGATION ═══════════
+   One sidebar for every look replaces the top menu on desktop. It holds
+   the grouped pages, the track switcher and the focus timer, so the timer
+   is in view on every page. It folds down to icons; on phones it becomes
+   a drawer behind a menu button, with a short tab bar at the bottom. */
+:root{--side-w:252px}
+html[data-side="mini"]{--side-w:76px}
+@media (min-width:721px){
+  :root{--topbar-h:0px}
+  html[data-look] body{padding-left:var(--side-w)}
+  html[data-look] .rdock,html[data-look] .toast{left:calc(50% + var(--side-w) / 2)}
+}
+
+#side{position:fixed;top:0;left:0;bottom:0;z-index:60;width:var(--side-w);display:flex;flex-direction:column;gap:.4rem;
+  padding:14px 12px 12px;overflow:hidden;background:var(--side-bg,var(--surface));border-right:1px solid var(--border);
+  color:var(--text);font-family:var(--font);transition:width .22s ease,transform .25s ease}
+#side .side-head{display:flex;align-items:center;gap:.35rem;min-height:38px;flex-shrink:0}
+/* fixed order: the old top-menu rules give some of these their own order values */
+#side>.side-head{order:0}#side>.cmdk-btn{order:1}#side>.side-cert{order:2}#side>.nav{order:3}#side>.stw{order:4}#side>.side-foot{order:5}
+#side .brand{flex:1 1 auto;min-width:0;display:flex;align-items:center;gap:.6rem;padding:.3rem .35rem;margin:0}
+#side .brand-mark{width:32px;height:32px;font-size:.72rem}
+#side .brand-words{min-width:0;display:flex;flex-direction:column;align-items:flex-start;line-height:1.2}
+#side .brand-sub{display:block;white-space:nowrap}
+#side .side-fold{flex-shrink:0;width:34px;height:34px;color:var(--text-2)}
+#side .side-fold svg{width:19px;height:19px}
+
+#side .cmdk-btn{order:0;flex-shrink:0;margin:0;width:100%;height:34px;display:flex;align-items:center;justify-content:flex-start;gap:.55rem;
+  padding:0 .7rem;border:1px solid var(--border);border-radius:var(--r-sm);background:var(--surface-2);color:var(--text-3)}
+#side .cmdk-btn span{display:inline;font-size:.82rem}
+#side .cmdk-btn kbd{display:inline-block;margin-left:auto}
+#side .side-cert{display:flex;width:100%;flex-shrink:0}
+#side .side-cert button{flex:1}
+
+#side .nav{position:static;display:flex;flex-direction:column;align-items:stretch;gap:2px;flex:1 1 auto;min-height:0;width:auto;
+  margin:0 -4px;padding:0 4px;overflow-x:hidden;overflow-y:auto;background:none;border:0;box-shadow:none;scrollbar-width:thin}
+#side .snav-h{flex-shrink:0;padding:.65rem .7rem .3rem;font:700 .64rem/1 var(--font-label);letter-spacing:.09em;text-transform:uppercase;color:var(--text-3)}
+#side .snav-h:first-child{padding-top:.25rem}
+#side .nav button{flex-shrink:0;display:flex;flex-direction:row;align-items:center;justify-content:flex-start;gap:.7rem;width:100%;min-width:0;
+  padding:.38rem .7rem;position:relative;white-space:nowrap;text-align:left}
+#side .nav button{font-size:.86rem}
+html[data-look="tactile"] #side .nav button{font-size:.74rem}
+#side .nav button>span:first-of-type{overflow:hidden;text-overflow:ellipsis}
+#side .nav button svg{display:block;flex-shrink:0;width:18px;height:18px;padding:0;background:none;box-sizing:border-box}
+#side .nav .nb{position:static;margin-left:auto}
+
+/* focus timer, docked at the bottom of the sidebar */
+#side .stw{flex-shrink:0;display:block;padding:.6rem .7rem .65rem;border-radius:var(--r-lg);background:var(--surface-2);border:1px solid var(--border);--pom-c:var(--accent)}
+#side .stw.is-break{--pom-c:var(--ok)}
+#side .stw.is-paused{--pom-c:var(--text-3)}
+#side .stw-head{display:flex;align-items:center;gap:.45rem;width:100%;padding:0;background:none;border:0;color:var(--pom-c);cursor:pointer;
+  font:700 .66rem/1 var(--font-label);letter-spacing:.09em;text-transform:uppercase}
+#side .stw .pom-dot{display:block;width:7px;height:7px;border-radius:50%;background:currentColor;flex-shrink:0}
+#side .stw.is-run .pom-dot{animation:pomPulse 1.6s ease-in-out infinite}
+#side .stw.is-paused .pom-dot{background:none;box-shadow:inset 0 0 0 1.5px currentColor}
+#side .stw-st{margin-left:auto;display:inline-flex;align-items:center;gap:.15rem;color:var(--text-3);font-weight:600;letter-spacing:.01em;text-transform:none;font-size:.72rem}
+#side .stw-st svg{width:12px;height:12px}
+#side .stw-time{font-family:var(--font-head);font-size:1.65rem;font-weight:800;letter-spacing:-.045em;line-height:1;margin:.3rem 0 .45rem;font-variant-numeric:tabular-nums}
+#side .stw .bar{margin:0}
+#side .stw.is-break .bar>i{background:var(--ok)}
+#side .stw-row{display:flex;align-items:center;gap:.4rem;margin-top:.5rem}
+#side .stw-pp{width:34px;height:34px;flex-shrink:0;border-radius:50%;display:grid;place-items:center;background:var(--accent);color:var(--accent-ink);border:0}
+#side .stw.is-break .stw-pp{background:var(--ok);color:#fff}
+#side .stw-pp svg{width:15px;height:15px}
+#side .stw-rs{width:32px;height:32px}
+#side .stw-seg{margin-left:auto}
+#side .stw-seg button{font-size:.7rem;padding:.2rem .5rem}
+#side .stw-foot{margin-top:.6rem;font-size:.72rem;color:var(--text-3)}
+@keyframes pomPulse{50%{opacity:.25}}
+html[data-fx="off"] #side .stw .pom-dot{animation:none}
+@media (prefers-reduced-motion:reduce){#side .stw .pom-dot,.mtimer .pom-dot{animation:none}}
+
+#side .side-foot{flex-shrink:0;display:flex;align-items:center;gap:.25rem;padding-top:.55rem;border-top:1px solid var(--border)}
+#side .side-set{display:flex;align-items:center;gap:.65rem;flex:1;min-width:0;padding:.45rem .6rem;border-radius:var(--r-sm);color:var(--text-2);font-size:.84rem;font-weight:500}
+#side .side-set:hover{background:var(--surface-2);color:var(--text)}
+#side .side-set svg{width:17px;height:17px;flex-shrink:0}
+#side .side-foot .icon-btn{width:32px;height:32px}
+
+/* each look dresses the sidebar its own way */
+html[data-look="aurora"] #side{--side-bg:rgba(255,255,255,.045);-webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur)}
+html[data-look="aurora"][data-theme="light"] #side{--side-bg:rgba(255,255,255,.5)}
+html[data-look="aurora"] #side .stw{background:rgba(255,255,255,.06)}
+html[data-look="aurora"] #side .stw-pp{background:var(--grad);color:#fff}
+html[data-look="midnight"] #side .stw{background:var(--bg);border-color:var(--border-2);border-radius:10px}
+html[data-look="midnight"] #side .stw-time{font:600 1.6rem/1 var(--mono);letter-spacing:-.02em}
+html[data-look="midnight"] #side .stw-pp{background:var(--fill);color:#fff}
+html[data-look="bento"] #side .stw{border:0;background:var(--t1);color:var(--tink);--text:var(--tink);--text-3:#3f3f3f;--pom-c:var(--tink);--surface-3:rgba(20,20,20,.14)}
+html[data-look="bento"] #side .stw .bar>i{background:#141414}
+html[data-look="bento"] #side .stw-pp{background:#141414;color:var(--t1)}
+html[data-look="bento"] #side .stw .seg{background:rgba(20,20,20,.1)}
+html[data-look="bento"] #side .stw .seg button{color:#3f3f3f}
+html[data-look="bento"] #side .stw .seg button.on{background:#141414;color:var(--t1)}
+html[data-look="clay"] #side .stw{border:0;box-shadow:var(--clay-in)}
+html[data-look="clay"] #side .stw-pp{box-shadow:0 3px 0 var(--press)}
+html[data-look="tactile"] #side{border-right:0;box-shadow:var(--panel)}
+html[data-look="tactile"] #side .nav{gap:5px}
+html[data-look="tactile"] #side .stw{border:0;box-shadow:var(--panel)}
+html[data-look="tactile"] #side .stw-time{font-family:var(--mono);font-weight:500;letter-spacing:-.02em;color:var(--txt-acc,var(--accent))}
+html[data-look="material"] #side{border-right:0;border-radius:0 18px 18px 0}
+html[data-look="material"] #side .nav button{border-radius:999px;padding:.42rem .9rem;color:var(--text-2)}
+html[data-look="material"] #side .nav button.on{background:var(--tonal);color:var(--on-tonal);font-weight:700}
+html[data-look="material"] #side .nav button:hover:not(.on){background:var(--surface-2)}
+html[data-look="material"] #side .stw{border:0;border-radius:24px;background:var(--accent-soft);color:var(--on-soft);--text-3:color-mix(in srgb,var(--on-soft) 70%,transparent)}
+html[data-look="material"] #side .stw-time{font-weight:400}
+html[data-look="stage"] #side .stw{border:0}
+@media (min-width:721px){
+  html[data-look="bento"] #side{top:10px;left:10px;bottom:10px;border:0;border-radius:var(--r-lg)}
+  html[data-look="bento"] body{padding-left:calc(var(--side-w) + 20px)}
+  html[data-look="clay"] #side{top:10px;left:10px;bottom:10px;border:0;border-radius:28px;box-shadow:var(--clay)}
+  html[data-look="clay"] body{padding-left:calc(var(--side-w) + 20px)}
+  html[data-look="stage"] #side{top:8px;left:8px;bottom:8px;border:0;border-radius:10px}
+  html[data-look="stage"] body{padding-left:calc(var(--side-w) + 16px)}
+}
+
+/* folded sidebar: icons only, the timer shrinks to its time and a play button */
+@media (min-width:721px){
+  html[data-side="mini"] #side{padding:14px 10px 12px;align-items:center}
+  html[data-side="mini"] #side :is(.brand-words,.cmdk-btn span,.cmdk-btn kbd,.stw-head,.stw-foot,.stw-seg,.stw-rs,.stw .bar,.side-set span){display:none}
+  html[data-side="mini"] #side .nav button>span:not(.nb){display:none}
+  html[data-side="mini"] #side .nav button::after{display:none}
+  html[data-side="mini"] #side .side-head{flex-direction:column;gap:.45rem}
+  html[data-side="mini"] #side .brand{display:none}
+  html[data-side="mini"] #side .cmdk-btn{width:44px;justify-content:center;padding:0}
+  html[data-side="mini"] #side .side-cert{flex-direction:column;width:52px}
+  html[data-side="mini"] #side .side-cert button{padding:.25rem 0;font-size:.64rem}
+  html[data-side="mini"] #side .nav{align-items:center;width:100%}
+  html[data-side="mini"] #side .nav button{justify-content:center;width:48px;padding:.45rem 0}
+  html[data-side="mini"] #side .nav .nb{position:absolute;top:1px;right:1px;margin:0;font-size:.55rem;padding:0 .28rem}
+  html[data-side="mini"] #side .snav-h{height:1px;width:32px;padding:0;margin:.55rem auto;background:var(--border);font-size:0;overflow:hidden}
+  html[data-side="mini"] #side .stw{width:56px;padding:.55rem .2rem;text-align:center}
+  html[data-side="mini"] #side .stw-time{font-size:.86rem;letter-spacing:-.02em;margin:0 0 .45rem}
+  html[data-side="mini"] #side .stw-row{justify-content:center;margin:0}
+  html[data-side="mini"] #side .side-foot{flex-direction:column;width:100%}
+  html[data-side="mini"] #side .side-set{flex:none;justify-content:center;padding:.4rem}
+  html[data-side="mini"] #side .side-foot .icon-btn{width:30px;height:30px}
+}
+
+/* phones: the sidebar becomes a drawer; a slim top bar and a tab bar take over */
+.scrim,.mtop,.tabbar{display:none}
+@media (max-width:720px){
+  html[data-look] body{padding-left:0}
+  #side{width:min(300px,86vw);transform:translateX(-105%);z-index:95;border-radius:0 20px 20px 0;box-shadow:0 10px 40px rgba(0,0,0,.35)}
+  html.drawer-open #side{transform:none}
+  #side{visibility:hidden;transition:transform .25s ease,visibility 0s linear .25s}
+  html.drawer-open #side{visibility:visible;transition:transform .25s ease}
+  .scrim{display:block;position:fixed;inset:0;z-index:94;background:rgba(0,0,0,.45);opacity:0;pointer-events:none;transition:opacity .2s}
+  html.drawer-open .scrim{opacity:1;pointer-events:auto}
+  .mtop{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:.55rem;height:56px;padding:0 .7rem;
+    background:color-mix(in srgb,var(--surface) 90%,transparent);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-bottom:1px solid var(--border)}
+  html[data-look="aurora"] .mtop{background:color-mix(in srgb,var(--solid) 80%,transparent)}
+  .mtop .icon-btn{width:38px;height:38px}
+  .mtop .icon-btn svg{width:20px;height:20px}
+  .mtop-t{font-family:var(--font-head);font-weight:800;font-size:.98rem;letter-spacing:-.02em;white-space:nowrap}
+  .mtimer{margin-left:auto;display:inline-flex;align-items:center;gap:.4rem;height:30px;padding:0 .7rem;border-radius:var(--r-pill);
+    background:var(--accent-soft);color:var(--accent);font-weight:700;font-size:.8rem;font-variant-numeric:tabular-nums}
+  .mtimer.is-paused{background:var(--surface-2);color:var(--text-2)}
+  .mtimer.is-break{background:var(--ok-bg);color:var(--ok)}
+  .mtimer .pom-dot{display:block;width:6px;height:6px;border-radius:50%;background:currentColor;animation:pomPulse 1.6s ease-in-out infinite}
+  .mtimer.is-paused .pom-dot{animation:none;background:none;box-shadow:inset 0 0 0 1.5px currentColor}
+  .tabbar{position:fixed;left:0;right:0;bottom:0;z-index:60;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));
+    padding:.3rem .35rem calc(.35rem + env(safe-area-inset-bottom));background:var(--surface);border-top:1px solid var(--border)}
+  html[data-look="aurora"] .tabbar{background:var(--solid)}
+  .tabbar button{position:relative;display:flex;flex-direction:column;align-items:center;gap:.2rem;padding:.4rem 0;border-radius:var(--r-sm);
+    font-size:.66rem;font-weight:600;color:var(--text-3)}
+  .tabbar button.on{color:var(--accent)}
+  .tabbar svg{width:20px;height:20px}
+  html[data-look="material"] .tabbar button.on{color:var(--text)}
+  html[data-look="material"] .tabbar button.on svg{box-sizing:content-box;padding:3px 16px;border-radius:999px;background:var(--tonal);color:var(--on-tonal)}
+  .tabbar .nb{position:absolute;top:1px;left:calc(50% + 6px);font-size:.55rem;font-weight:700;line-height:1.5;padding:0 .3rem;
+    border-radius:var(--r-pill);background:var(--accent);color:var(--accent-ink)}
+  .page{padding-bottom:6rem}
+}
+
+/* ═══════════ V8 · HOME: quick launch + clickable stat tiles ═══════════ */
+.ql-h{margin:.25rem 0 .65rem .15rem}
+.ql-grid{grid-template-columns:repeat(5,minmax(0,1fr));gap:.7rem;margin-bottom:1rem}
+.ql{display:flex;flex-direction:column;align-items:flex-start;gap:.5rem;min-width:0;text-align:left;cursor:pointer;color:var(--text);
+  transition:transform .15s ease,box-shadow .15s ease,background .15s ease}
+html[data-look] .ql{padding:.9rem .95rem .85rem}
+.ql:hover{transform:translateY(-2px)}
+.ql-ic{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;flex-shrink:0;color:var(--tc,var(--accent));background:color-mix(in srgb,var(--tc,var(--accent)) 16%,transparent)}
+.ql-ic svg{width:19px;height:19px}
+.ql-t{font-weight:700;font-size:.9rem;letter-spacing:-.01em;line-height:1.2}
+.ql-s{font-size:.74rem;color:var(--text-3);margin-top:-.3rem;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-variant-numeric:tabular-nums}
+html[data-look="bento"] .ql-ic,html[data-look="clay"] .ql-ic,html[data-look="material"] .ql-ic{color:inherit;background:color-mix(in srgb,currentColor 12%,transparent)}
+html[data-look="tactile"] .ql-t{text-transform:uppercase;letter-spacing:.06em;font-size:.74rem;font-weight:600}
+.stat[data-go]{cursor:pointer;transition:transform .15s ease}
+.stat[data-go]:hover{transform:translateY(-2px)}
+/* narrow content (phones, tablets, a wide-open sidebar on a small window):
+   the tiles turn into compact app icons */
+.ql-wrap{container-type:inline-size}
+@container (max-width:700px){
+  .ql-grid{grid-template-columns:repeat(5,minmax(0,1fr));gap:.45rem}
+  html[data-look] .ql{align-items:center;text-align:center;padding:.65rem .1rem .55rem;gap:.35rem;border-radius:16px}
+  .ql-ic{width:40px;height:40px;border-radius:13px}
+  .ql-t,html[data-look="tactile"] .ql-t{font-size:.62rem;font-weight:600;letter-spacing:0;white-space:nowrap;text-transform:none}
+  .ql-s{display:none}
+}
+
+/* V8 app extras: settings row state, phone top bar pieces, print */
+#side .side-set.on{background:var(--surface-3);color:var(--text);font-weight:600}
+.mtop-brand{display:flex;align-items:center;gap:.55rem;min-width:0;padding:.2rem;border-radius:var(--r-sm)}
+.mtop-sp{flex:1}
+.mtimer.is-idle{display:none!important}
+.stat[data-go]:focus-visible,.ql:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+@media (max-width:720px){
+  :root{--topbar-h:56px}
+  .mtimer{margin-left:0}
+}
+@media print{#side,.mtop,.tabbar,.scrim{display:none!important} html[data-look] body{padding-left:0!important}}
 </style>
 </head>
 <body>
@@ -5115,7 +5325,8 @@ const ICON={
   palette:I('<path d="M12 3a9 9 0 1 0 0 18c1.1 0 1.8-.8 1.8-1.7 0-.5-.2-.9-.5-1.2-.3-.3-.5-.7-.5-1.2 0-.9.8-1.7 1.8-1.7H16a5 5 0 0 0 5-5C21 6.5 17 3 12 3z"/><circle cx="7.5" cy="11.5" r="1.2"/><circle cx="10" cy="7.5" r="1.2"/><circle cx="14.5" cy="7.5" r="1.2"/>'),
   focus:I('<path d="M3 8V5a2 2 0 0 1 2-2h3M16 3h3a2 2 0 0 1 2 2v3M21 16v3a2 2 0 0 1-2 2h-3M8 21H5a2 2 0 0 1-2-2v-3"/>'),
   list:I('<path d="M9 6h12M9 12h12M9 18h12"/><path d="M4 6h.01M4 12h.01M4 18h.01"/>'),
-  swap:I('<path d="M7 7h13l-4-4"/><path d="M17 17H4l4 4"/>')
+  swap:I('<path d="M7 7h13l-4-4"/><path d="M17 17H4l4 4"/>'),
+  menu:I('<path d="M4 6h16M4 12h16M4 18h16"/>')
 };
 
 // ── READING EXTRAS: flow diagrams + exam breakdowns ──────────────────
@@ -5310,34 +5521,72 @@ function render(){
   const dock=ui.page==='read'&&!!ui.ref&&CERT.references.some(r=>r.id===ui.ref);
   document.documentElement.setAttribute('data-ctxdom',ctxDomain());
   const fab=!['quiz','exam'].includes(ui.page)?'<button class="fab" data-go="quiz" title="Start a quiz">'+ICON.bolt+'<span>Quiz</span></button>':'';
-  app.innerHTML = topbar() + '<main class="page fade'+(dock?' has-dock':'')+'">' + pageHtml() + footer() + '</main>' +
-    (dock?readDock():'') + fab + (ui.lookPicker?lookModal():'') + (ui.confirm?confirmModal():'');
+  app.innerHTML = sideNav() + mobileBar() + '<main class="page fade'+(dock?' has-dock':'')+'">' + pageHtml() + footer() + '</main>' +
+    (dock?readDock():'') + fab + tabBar() + '<div class="scrim"></div>' + (ui.lookPicker?lookModal():'') + (ui.confirm?confirmModal():'');
   bind();
+  pomSync();
   window.scrollTo({top:0,behavior:'instant'});
   updReadProg();
 }
 
-function topbar(){
-  const nb=k=>{
-    if(k==='exam'&&P.exam&&!P.exam.done) return '<span class="nb warn">•</span>';
-    if(k==='weak'){ const n=weakDomains().length; return n?'<span class="nb">'+n+'</span>':''; }
-    if(k==='marks'){ const n=countMarks(); return n?'<span class="nb">'+n+'</span>':''; }
-    if(k==='notes'){ const n=countNotes(); return n?'<span class="nb">'+n+'</span>':''; }
-    if(k==='cards'){ const n=dueCards(0).length; return n?'<span class="nb">'+n+'</span>':''; }
-    return '';
-  };
-  return '<header class="topbar">'+
-    '<button class="brand" data-go="home"><span class="brand-mark">JB</span>'+
-      '<span class="brand-words"><span class="brand-txt">Cyber Lab</span><br><span class="brand-sub">'+CERT.track+' · '+CERT.code+'</span>'+
-      '<span class="brand-date">'+new Date().toLocaleDateString(undefined,{weekday:'long',month:'long',day:'numeric',year:'numeric'})+'</span></span></button>'+
+// ── Sidebar (V8) ─────────────────────────────────────────────────────
+// One sidebar for every look replaces the old top menu. The ☰ button folds
+// it down to icons (remembered in settings). On phones it becomes a drawer
+// behind the ☰ in the top bar, with a short tab bar along the bottom.
+const SIDE_GROUPS=[
+  {h:'Study',k:['home','quiz','cards','labs','read']},
+  {h:'Practice',k:['exam','weak']},
+  {h:'Library',k:['marks','notes','stats']}
+];
+const SIDE_LABEL={cards:'Flashcards',exam:'Practice exam',weak:'Weak spots'};
+function navBadge(k){
+  if(k==='exam'&&P.exam&&!P.exam.done) return '<span class="nb warn">•</span>';
+  if(k==='weak'){ const n=weakDomains().length; return n?'<span class="nb">'+n+'</span>':''; }
+  if(k==='marks'){ const n=countMarks(); return n?'<span class="nb">'+n+'</span>':''; }
+  if(k==='notes'){ const n=countNotes(); return n?'<span class="nb">'+n+'</span>':''; }
+  if(k==='cards'){ const n=dueCards(0).length; return n?'<span class="nb">'+n+'</span>':''; }
+  return '';
+}
+function sideNav(){
+  const item=k=>{ const n=NAV.find(x=>x.k===k);
+    return '<button data-go="'+k+'" data-kbd="G '+n.g.toUpperCase()+'" class="'+(ui.page===k?'on':'')+'">'+ICON[n.i]+
+      '<span>'+(SIDE_LABEL[k]||n.l)+'</span>'+navBadge(k)+'</button>'; };
+  return '<aside id="side" aria-label="Main menu">'+
+    '<div class="side-head">'+
+      '<button class="icon-btn side-fold" id="sideFold" title="'+(S.side==='mini'?'Expand':'Collapse')+' the menu" aria-label="Menu">'+ICON.menu+'</button>'+
+      '<button class="brand" data-go="home"><span class="brand-mark">JB</span>'+
+        '<span class="brand-words"><span class="brand-txt">Cyber Lab</span><span class="brand-sub">'+CERT.track+' · '+CERT.code+'</span></span></button>'+
+    '</div>'+
     '<button class="cmdk-btn" id="cmdBtn" title="Search everything ('+MOD+'K)">'+ICON.search+'<span>Search…</span><kbd>'+MOD+'K</kbd></button>'+
-    '<nav class="nav">'+NAV.map(n=>'<button data-go="'+n.k+'" data-kbd="G '+n.g.toUpperCase()+'" class="'+(ui.page===n.k?'on':'')+'">'+ICON[n.i]+'<span>'+n.l+'</span>'+nb(n.k)+'</button>').join('')+'</nav>'+
-    '<div class="tb-right">'+
-      '<div class="seg">'+Object.values(CERTS).map(c=>'<button data-cert="'+c.id+'" class="'+(c.id===CERT.id?'on':'')+'">'+c.short+'</button>').join('')+'</div>'+
+    '<div class="seg side-cert">'+Object.values(CERTS).map(c=>'<button data-cert="'+c.id+'" class="'+(c.id===CERT.id?'on':'')+'">'+c.short+'</button>').join('')+'</div>'+
+    '<nav class="nav">'+SIDE_GROUPS.map(g=>'<div class="snav-h">'+g.h+'</div>'+g.k.map(item).join('')).join('')+'</nav>'+
+    pomWidget()+
+    '<div class="side-foot">'+
+      '<button class="side-set'+(ui.page==='set'?' on':'')+'" data-go="set">'+ICON.cog+'<span>Settings</span></button>'+
       '<button class="icon-btn" id="lookBtn" title="Change the look">'+ICON.palette+'</button>'+
       '<button class="icon-btn" id="themeBtn" title="Toggle light and dark">'+(S.theme==='dark'?ICON.sun:ICON.moon)+'</button>'+
-      '<span class="tray-clock" id="trayClock">'+clockTxt()+'</span>'+
-    '</div></header>';
+    '</div></aside>';
+}
+function mobileBar(){
+  return '<header class="mtop">'+
+    '<button class="icon-btn" data-drawer title="Menu" aria-label="Open the menu">'+ICON.menu+'</button>'+
+    '<button class="mtop-brand" data-go="home"><span class="brand-mark">JB</span><span class="mtop-t">Cyber Lab</span></button>'+
+    '<span class="mtop-sp"></span>'+pomPill()+
+    '<button class="icon-btn" data-cmd title="Search" aria-label="Search">'+ICON.search+'</button></header>';
+}
+function tabBar(){
+  const t=(k,ic,l)=>'<button data-go="'+k+'" class="'+(ui.page===k?'on':'')+'">'+ICON[ic]+'<span>'+l+'</span>'+(k==='cards'?navBadge('cards'):'')+'</button>';
+  return '<nav class="tabbar" aria-label="Main pages">'+t('home','home','Home')+t('quiz','quiz','Quiz')+t('cards','cards','Cards')+t('read','book','Reading')+
+    '<button data-drawer aria-label="Open the menu">'+ICON.menu+'<span>Menu</span></button></nav>';
+}
+function closeDrawer(){ document.documentElement.classList.remove('drawer-open'); }
+function applySide(){
+  document.documentElement.setAttribute('data-side',S.side==='mini'?'mini':'full');
+  const b=$('#sideFold'); if(b) b.title=(S.side==='mini'?'Expand':'Collapse')+' the menu';
+}
+function toggleSide(){
+  if(window.matchMedia&&window.matchMedia('(max-width:720px)').matches){ closeDrawer(); return; }
+  S.side=S.side==='mini'?'full':'mini'; saveS(); applySide();
 }
 
 function footer(){
@@ -5365,6 +5614,28 @@ function pageHtml(){
 }
 
 // ── HOME ─────────────────────────────────────────────────────────────
+// ── Quick launch: one tile per part of the app, each with a live detail ──
+function quickLaunch(){
+  const o=P.scores[0], dueN=dueCards(0).length, w=weakDomains().length,
+        labsDone=allLabs().filter(l=>labRec(l.id).done).length,
+        readN=CERT.references.filter(r=>P.read[r.id]).length, examOn=P.exam&&!P.exam.done;
+  const T=[
+    ['quiz','Quiz','bolt','--accent',CERT.questions.length+' questions'],
+    ['cards','Flashcards','cards','--accent-2',dueN?dueN+' due now':'All caught up'],
+    ['labs','Labs','labs','--ok',labsDone+' of '+allLabs().length+' done'],
+    ['read','Reading','book','--warn',readN+' of '+CERT.references.length+' topics read'],
+    ['exam','Exam','exam','--no',examOn?'Resume your exam':EXLEN()+' Qs · '+(EXMINS()?EXMINS()+' min':'untimed')],
+    ['weak','Weak spots','target','--no',w?w+' domain'+(w===1?'':'s')+' to drill':'None right now'],
+    ['marks','Saved','mark','--warn',countMarks()+' saved'],
+    ['notes','Notes','note','--ok',countNotes()+' note'+(countNotes()===1?'':'s')],
+    ['stats','Stats','chart','--accent-2',o.t?pct(o)+'% accuracy':'No answers yet'],
+    ['timer','Timer','clock','--accent','<span data-pom-t>'+pomQlTxt(pomView())+'</span>']
+  ];
+  return '<div class="ql-wrap"><div class="sec-title ql-h">'+ICON.bolt+'Quick launch</div><div class="grid ql-grid">'+
+    T.map(t=>'<button class="stat ql" data-go="'+t[0]+'" style="--tc:var('+t[3]+')"><span class="ql-ic">'+ICON[t[2]]+'</span>'+
+      '<span class="ql-t">'+t[1]+'</span><span class="ql-s">'+t[4]+'</span></button>').join('')+'</div></div>';
+}
+
 function home(){
   const o=P.scores[0], acc=pct(o), r=rank(P.xp), d=daysToExam();
   const goal=S.dailyGoal, done=todayCount(), gp=Math.min(100,Math.round(done/goal*100));
@@ -5382,11 +5653,12 @@ function home(){
     '</div></div>';
 
   h+='<div class="grid g-4" style="margin-bottom:1rem">'+
-    stat('Accuracy',o.t?acc+'%':'—',o.t?o.c+' of '+o.t+' correct':'no answers yet',acc,acc>=75?'ok':acc>=60?'warn':'no')+
-    stat('Day streak',(P.streak||0),(P.streak?'keep it alive':'answer one question'),null)+
-    stat('Experience',P.xp,r.cur.name,null)+
-    stat("Today's goal",done+' / '+goal,gp>=100?'goal met':'questions answered',gp)+
+    stat('Accuracy',o.t?acc+'%':'—',o.t?o.c+' of '+o.t+' correct':'no answers yet',acc,acc>=75?'ok':acc>=60?'warn':'no','stats')+
+    stat('Day streak',(P.streak||0),(P.streak?'keep it alive':'answer one question'),null,'','stats')+
+    stat('Experience',P.xp,r.cur.name,null,'','stats')+
+    stat("Today's goal",done+' / '+goal,gp>=100?'goal met':'questions answered',gp,'','quiz')+
   '</div>';
+  h+=quickLaunch();
 
   h+='<div class="grid g-main">';
 
@@ -5442,8 +5714,8 @@ function home(){
   return h;
 }
 
-function stat(l,v,sub,p,cls){
-  return '<div class="stat"><div class="stat-l">'+l+'</div><div class="stat-v">'+v+'</div>'+
+function stat(l,v,sub,p,cls,go){
+  return '<div class="stat"'+(go?' data-go="'+go+'" role="button" tabindex="0"':'')+'><div class="stat-l">'+l+'</div><div class="stat-v">'+v+'</div>'+
     (sub?'<div style="font-size:.755rem;color:var(--text-3);margin-top:.15rem">'+sub+'</div>':'')+
     (p!==null&&p!==undefined?'<div class="bar '+(cls||'')+'"><i style="width:'+Math.min(100,p)+'%"></i></div>':'')+'</div>';
 }
@@ -6048,10 +6320,10 @@ function timer(){
   const left=p.running?Math.max(0,p.endsAt-Date.now()):p.left*1000;
   const secs=Math.ceil(left/1000);
   const m=Math.floor(secs/60), s=secs%60;
-  const prog=1-(secs/total);
+  const prog=1-(secs/total), v=pomView();
 
   return '<div class="page-head"><div><div class="page-title">Focus timer</div>'+
-    '<div class="page-sub">'+(p.mode==='work'?'Work session':'Break')+' · '+p.done+' completed today</div></div></div>'+
+    '<div class="page-sub">'+(p.mode==='work'?'Work session':'Break')+' · '+pomDoneTxt(v)+'</div></div></div>'+
     '<div class="grid g-main"><div class="card card-pad" style="text-align:center;padding:2.4rem 1.5rem">'+
     '<div style="display:inline-block;position:relative;margin-bottom:1.6rem">'+ringSvg(prog*100,190,11)+
     '<div style="position:absolute;inset:0;display:grid;place-items:center"><div>'+
@@ -6059,9 +6331,9 @@ function timer(){
     '<div style="font-size:.79rem;color:var(--text-3);font-weight:600;margin-top:.3rem">'+(p.mode==='work'?'FOCUS':'BREAK')+'</div>'+
     '</div></div></div>'+
     '<div class="btn-row" style="justify-content:center">'+
-      '<button class="btn btn-pri btn-lg" id="pomToggle">'+(p.running?ICON.pause+'Pause':ICON.play+'Start')+'</button>'+
-      '<button class="btn" id="pomReset">'+ICON.reset+'Reset</button>'+
-      '<button class="btn" id="pomSwitch">'+(p.mode==='work'?'Switch to break':'Switch to work')+'</button>'+
+      '<button class="btn btn-pri btn-lg" data-pom="toggle">'+pomToggleLbl(v)+'</button>'+
+      '<button class="btn" data-pom="reset">'+ICON.reset+'Reset</button>'+
+      '<button class="btn" data-pom="switch">'+(p.mode==='work'?'Switch to break':'Switch to work')+'</button>'+
     '</div></div>'+
     '<div class="stack"><div class="card card-pad"><div class="sec-title">'+ICON.cog+'Durations</div>'+
     '<div class="set-row"><div class="set-i"><div class="set-n">Work</div><div class="set-d">minutes per focus block</div></div>'+
@@ -6069,26 +6341,113 @@ function timer(){
     '<div class="set-row"><div class="set-i"><div class="set-n">Break</div><div class="set-d">minutes between blocks</div></div>'+
     '<div class="set-c"><input type="number" class="input num" id="breakMins" min="1" max="60" value="'+S.breakMins+'"></div></div></div>'+
     '<div class="card card-pad"><div class="sec-title">'+ICON.check+'Completed</div>'+
-    '<div class="stat-v">'+p.done+' <small>blocks</small></div></div></div></div>';
+    '<div class="stat-v">'+v.done+' <small>focus blocks today</small></div></div></div></div>';
 }
-function tickPom(){
-  const p=S.pom; if(!p.running) return;
-  if(Date.now()>=p.endsAt){
-    p.running=false; p.done++;
-    p.mode = p.mode==='work'?'break':'work';
-    p.left=(p.mode==='work'?S.workMins:S.breakMins)*60;
-    saveS(); toast(p.mode==='break'?'Focus block complete — take a break':'Break over — back to it');
-    if(ui.page==='timer') render();
-    return;
+// ── Focus timer everywhere ───────────────────────────────────────────
+// The timer lives at the bottom of the sidebar (and in the phone top bar),
+// so it is in view on every page. Everything updates in place once a
+// second, so a click never lands on a half-redrawn button.
+function pomTotal(){ return (S.pom.mode==='work'?S.workMins:S.breakMins)*60; }
+function pomSecs(){ const p=S.pom; return p.running?Math.max(0,Math.ceil((p.endsAt-Date.now())/1000)):p.left; }
+function pomView(){
+  const p=S.pom, secs=pomSecs(), total=pomTotal();
+  return {
+    st:p.running?'run':secs!==total?'paused':'idle', mode:p.mode, name:p.mode==='work'?'Focus':'Break',
+    t:Math.floor(secs/60)+':'+String(secs%60).padStart(2,'0'),
+    pct:Math.max(0,Math.min(100,Math.round((1-secs/total)*1000)/10)),
+    done:p.day===todayKey()?(p.done||0):0
+  };
+}
+const pomStateTxt=v=>v.st==='run'?'Running':v.st==='paused'?'Paused':'Ready';
+const pomToggleLbl=v=>v.st==='run'?ICON.pause+'Pause':ICON.play+(v.st==='paused'?'Resume':'Start');
+const pomDoneTxt=v=>v.done+' focus block'+(v.done===1?'':'s')+' today';
+const baseTitle=()=>'JAEBEASTY Cyber Lab — '+CERT.track+' '+CERT.code;
+const pomWCls=v=>'stw is-'+v.st+' is-'+v.mode;
+const pomPPTip=v=>v.st==='run'?'Pause':v.st==='paused'?'Resume':'Start';
+const pomHeadTip=v=>pomDoneTxt(v)+' · open the full timer';
+const pomQlTxt=v=>v.st!=='idle'?v.t+' left':v.mode==='work'?S.workMins+' min focus':S.breakMins+' min break';
+
+function pomWidget(){
+  const v=pomView();
+  return '<div class="'+pomWCls(v)+'" id="pomW">'+
+    '<button class="stw-head" data-go="timer" title="'+pomHeadTip(v)+'"><i class="pom-dot"></i>'+
+      '<span class="stw-m">'+v.name+'</span><span class="stw-st">'+pomStateTxt(v)+ICON.right+'</span></button>'+
+    '<div class="stw-time">'+v.t+'</div>'+
+    '<span class="bar"><i style="width:'+v.pct+'%"></i></span>'+
+    '<div class="stw-row">'+
+      '<button class="stw-pp" data-pom="toggle" data-k="'+v.st+'" title="'+pomPPTip(v)+'">'+(v.st==='run'?ICON.pause:ICON.play)+'</button>'+
+      '<button class="icon-btn stw-rs" data-pom="reset" title="Reset">'+ICON.reset+'</button>'+
+      '<div class="seg stw-seg">'+
+        '<button data-pom="work" class="'+(v.mode==='work'?'on':'')+'">Focus</button>'+
+        '<button data-pom="break" class="'+(v.mode==='break'?'on':'')+'">Break</button></div>'+
+    '</div></div>';
+}
+function pomPill(){
+  const v=pomView();
+  return '<button class="mtimer is-'+v.st+' is-'+v.mode+'" id="pomPill" data-go="timer" title="'+v.name+' timer">'+
+    '<i class="pom-dot"></i><span class="mtimer-t">'+v.t+'</span></button>';
+}
+function putTxt(el,t){ if(el&&el.textContent!==t) el.textContent=t; }
+function putCls(el,c){ if(el&&el.className!==c) el.className=c; }
+function putHtml(el,k,h){ if(el&&el.dataset.k!==k){ el.dataset.k=k; el.innerHTML=h; } }
+function putW(el,p){ if(el&&el.style.width!==p+'%') el.style.width=p+'%'; }
+function putTitle(el,t){ if(el&&el.title!==t) el.title=t; }
+function pomSync(){
+  const v=pomView();
+  const w=document.getElementById('pomW');
+  if(w){
+    putCls(w,pomWCls(v));
+    putTxt(w.querySelector('.stw-m'),v.name);
+    const st=w.querySelector('.stw-st'), stt=pomStateTxt(v);
+    if(st&&st.firstChild&&st.firstChild.nodeValue!==stt) st.firstChild.nodeValue=stt;
+    putTitle(w.querySelector('.stw-head'),pomHeadTip(v));
+    putTxt(w.querySelector('.stw-time'),v.t);
+    putW(w.querySelector('.bar>i'),v.pct);
+    const pp=w.querySelector('.stw-pp');
+    putHtml(pp,v.st,v.st==='run'?ICON.pause:ICON.play); putTitle(pp,pomPPTip(v));
+    w.querySelectorAll('.stw-seg [data-pom]').forEach(b=>b.classList.toggle('on',b.dataset.pom===v.mode));
   }
-  if(ui.page==='timer'){
-    const secs=Math.ceil((p.endsAt-Date.now())/1000);
+  const pill=document.getElementById('pomPill');
+  if(pill){ putCls(pill,'mtimer is-'+v.st+' is-'+v.mode); putTxt(pill.querySelector('.mtimer-t'),v.t); }
+  document.querySelectorAll('[data-pom-t]').forEach(el=>putTxt(el,pomQlTxt(v)));
+  const title=v.st==='run'?v.t+' · '+v.name+' — Cyber Lab':baseTitle();
+  if(document.title!==title) document.title=title;
+}
+function pomAct(a){
+  const p=S.pom;
+  if(a==='toggle'){
+    if(p.running){ p.left=pomSecs(); p.running=false; }
+    else { p.endsAt=Date.now()+p.left*1000; p.running=true; }
+  } else if(a==='reset'){
+    p.running=false; p.left=pomTotal();
+  } else {                       // 'switch' flips; 'work' / 'break' pick a mode
+    const m=a==='switch'?(p.mode==='work'?'break':'work'):a;
+    if(m===p.mode) return;
+    p.mode=m; p.running=false; p.left=pomTotal();
+  }
+  saveS();
+  if(ui.page==='timer') render(); else pomSync();
+}
+function chime(){ beep(true); setTimeout(()=>beep(true),260); }
+function tickPom(){
+  const p=S.pom;
+  if(p.running&&Date.now()>=p.endsAt){
+    const wasWork=p.mode==='work';
+    p.running=false;
+    if(wasWork){ const t=todayKey(); if(p.day!==t){ p.day=t; p.done=0; } p.done=(p.done||0)+1; }
+    p.mode=wasWork?'break':'work';
+    p.left=pomTotal();
+    saveS(); chime();
+    toast(wasWork?'Focus block complete — take a break':'Break over — back to it');
+    if(ui.page==='timer') render();
+  } else if(p.running&&ui.page==='timer'){
+    const secs=pomSecs(), total=pomTotal();
     const el=document.querySelector('.timer');
     if(el) el.textContent=Math.floor(secs/60)+':'+String(secs%60).padStart(2,'0');
-    const total=(p.mode==='work'?S.workMins:S.breakMins)*60;
     const c=document.querySelector('.ring .fgc');
     if(c){ const r=+c.getAttribute('r'), cc=2*Math.PI*r; c.setAttribute('stroke-dashoffset',cc-cc*(1-secs/total)); }
   }
+  pomSync();
 }
 
 
@@ -6750,6 +7109,10 @@ function bind(){
   bindLabs();
   document.querySelectorAll('[data-go]').forEach(el=>el.onclick=()=>goPage(el.dataset.go));
   const cmb=$('#cmdBtn'); if(cmb) cmb.onclick=openCmd;
+  document.querySelectorAll('[data-cmd]').forEach(el=>el.onclick=openCmd);
+  const sf=$('#sideFold'); if(sf) sf.onclick=toggleSide;
+  document.querySelectorAll('[data-drawer]').forEach(el=>el.onclick=()=>document.documentElement.classList.toggle('drawer-open'));
+  const scr=$('.scrim'); if(scr) scr.onclick=closeDrawer;
   document.querySelectorAll('[data-cert]').forEach(el=>el.onclick=()=>switchCert(el.dataset.cert));
   const tb=$('#themeBtn'); if(tb) tb.onclick=toggleTheme;
   const lkb=$('#lookBtn'); if(lkb) lkb.onclick=()=>{ ui.lookPicker=true; render(); };
@@ -6856,20 +7219,8 @@ function bind(){
   };
   const re=$('#retakeExam'); if(re) re.onclick=()=>{ P.exam=null; saveP(); render(); };
 
-  // timer
-  const pt=$('#pomToggle'); if(pt) pt.onclick=()=>{
-    const p=S.pom;
-    if(p.running){ p.left=Math.max(0,Math.ceil((p.endsAt-Date.now())/1000)); p.running=false; }
-    else { p.endsAt=Date.now()+p.left*1000; p.running=true; }
-    saveS(); render();
-  };
-  const pr=$('#pomReset'); if(pr) pr.onclick=()=>{
-    const p=S.pom; p.running=false; p.left=(p.mode==='work'?S.workMins:S.breakMins)*60; saveS(); render();
-  };
-  const ps=$('#pomSwitch'); if(ps) ps.onclick=()=>{
-    const p=S.pom; p.mode=p.mode==='work'?'break':'work'; p.running=false;
-    p.left=(p.mode==='work'?S.workMins:S.breakMins)*60; saveS(); render();
-  };
+  // timer (the Timer page and the Home card share these buttons)
+  document.querySelectorAll('[data-pom]').forEach(el=>el.onclick=()=>pomAct(el.dataset.pom));
   const wm=$('#workMins'); if(wm) wm.onchange=()=>{ S.workMins=Math.max(1,Math.min(120,+wm.value||25)); if(!S.pom.running&&S.pom.mode==='work') S.pom.left=S.workMins*60; saveS(); render(); };
   const bm=$('#breakMins'); if(bm) bm.onchange=()=>{ S.breakMins=Math.max(1,Math.min(60,+bm.value||5)); if(!S.pom.running&&S.pom.mode==='break') S.pom.left=S.breakMins*60; saveS(); render(); };
 
@@ -6946,6 +7297,7 @@ function ctxDomain(){
   return ui.domain||0;
 }
 function goPage(p){
+  closeDrawer();
   if(p!=='quiz'){ ui.weakMode=false; ui.markMode=false; }
   if(p==='read') ui.ref=null;
   if(p!=='labs'){ ui.lab=null; ui.labS=null; }
@@ -7030,8 +7382,8 @@ function lookTiles(){
 }
 function lookModal(){
   return '<div class="modal-bg" id="lookBg"><div class="modal lk-modal" role="dialog" aria-label="Choose a look">'+
-    '<div class="modal-t">'+ICON.palette+'Pick your V7 look</div>'+
-    '<div class="modal-d">Seven full redesigns, each with a light and a dark version. Click one and the whole app behind this window changes to match. Your questions, notes and progress stay exactly as they are. Switch any time from the palette button in the top bar, from Settings, or with '+MOD+'K.</div>'+
+    '<div class="modal-t">'+ICON.palette+'Pick your look</div>'+
+    '<div class="modal-d">Seven full redesigns, each with a light and a dark version. Click one and the whole app behind this window changes to match. Your questions, notes and progress stay exactly as they are. Switch any time from the palette button at the bottom of the menu, from Settings, or with '+MOD+'K.</div>'+
     lookTiles()+
     '<div class="btn-row lk-foot"><span class="lk-now">Now wearing <b class="look-now">'+esc(lookName())+'</b></span>'+
       '<button class="btn" id="lookMode">'+(S.theme==='dark'?ICON.sun+'See it light':ICON.moon+'See it dark')+'</button>'+
@@ -7061,6 +7413,7 @@ function applyLook(){
   r.setAttribute('data-theme',S.theme);
   r.setAttribute('data-look',curLook());
   r.setAttribute('data-fx',S.fx===false?'off':'on');
+  r.setAttribute('data-side',S.side==='mini'?'mini':'full');
   r.style.setProperty('--fs',(S.textSize||16)+'px');
   const rf=READ_FONTS.find(f=>f.v===S.readFont);
   if(rf&&rf.f) r.style.setProperty('--font-read',rf.f); else r.style.removeProperty('--font-read');
@@ -7129,6 +7482,8 @@ let gAt=0;
 document.addEventListener('keydown',e=>{
   if((e.metaKey||e.ctrlKey)&&!e.altKey&&(e.key==='k'||e.key==='K')){ if($('#cmdBg')) closeCmd(); else openCmd(); e.preventDefault(); return; }
   if(/^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)) return;
+  if(e.key==='Escape'&&document.documentElement.classList.contains('drawer-open')){ closeDrawer(); e.preventDefault(); return; }
+  if((e.key==='Enter'||e.key===' ')&&e.target.matches&&e.target.matches('[role="button"][data-go]')){ goPage(e.target.dataset.go); e.preventDefault(); return; }
   if(!e.metaKey&&!e.ctrlKey&&!e.altKey&&!(ui&&(ui.confirm||ui.lookPicker))){
     if(gAt&&Date.now()-gAt<1200){ const n=NAV.find(x=>x.g===e.key.toLowerCase()); gAt=0; if(n){ goPage(n.k); e.preventDefault(); return; } }
     else if(e.key==='g'||e.key==='G'){ gAt=Date.now(); return; }
@@ -7170,6 +7525,7 @@ S.mode=S.mode||(S.theme==='dark'?'dark':S.theme==='light'?'light':'system');
 S.fx=S.fx!==false;
 S.readFont=READ_FONTS.some(f=>f.v===S.readFont)?S.readFont:'look';
 S.readFocus=!!S.readFocus;
+S.side=S.side==='mini'?'mini':'full';
 S.textSize=S.textSize||16;
 S.shuffleOpts=S.shuffleOpts||false;
 S.hideDomain=S.hideDomain||false;
@@ -7180,7 +7536,8 @@ S.workMins=S.workMins||25;
 S.breakMins=S.breakMins||5;
 S.examDates=S.examDates||{};
 S.pom=S.pom||{mode:'work',running:false,left:S.workMins*60,endsAt:0,done:0};
-if(S.pom.running&&S.pom.endsAt<Date.now()){ S.pom.running=false; S.pom.left=S.workMins*60; }
+if(S.pom.running&&S.pom.endsAt<Date.now()){ S.pom.running=false; S.pom.left=pomTotal(); }
+if(S.pom.day!==todayKey()){ S.pom.day=todayKey(); S.pom.done=0; }
 saveS();
 
 applyLook();
