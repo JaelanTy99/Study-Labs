@@ -5,6 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>JAEBEASTY Cyber Lab v10</title>
 <meta name="theme-color" content="#0b0a1a">
+<!-- installable on a phone's home screen (needs manifest.webmanifest, sw.js and icons/ beside this file) -->
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Study Lab">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600;700&family=Chakra+Petch:wght@500;600;700&family=Exo+2:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&family=Rajdhani:wght@500;600;700&family=Silkscreen:wght@400;700&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@400;500&family=Figtree:wght@400;500;600;700;800;900&family=Geist+Mono:wght@400;500&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=Inter:wght@400;500;600;700&family=Manrope:wght@300;400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&family=Nunito:wght@600;700;800;900&family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Roboto+Flex:opsz,wght@8..144,400;8..144,500;8..144,600;8..144,700&family=Sora:wght@400;600;700;800&display=swap">
@@ -2319,6 +2326,28 @@ html[data-look="survey"] .reb-others{display:none}
 .sc-sv .link.no{stroke:var(--no);animation:none}
 .sc-sv .tag{font-size:10px;font-weight:700}
 .sc-sv .you{fill:var(--text)}
+
+/* ═══════════ PHONE APP · home-screen install ═══════════
+   Opened from the home screen the app runs full screen and the status bar
+   is drawn over it, so the top bar and menu leave room for the notch.
+   (In the browser these insets are zero and nothing moves.) */
+@media (max-width:720px){
+  .mtop{height:calc(56px + env(safe-area-inset-top));padding-top:env(safe-area-inset-top);
+    padding-left:max(.7rem,env(safe-area-inset-left));padding-right:max(.7rem,env(safe-area-inset-right))}
+  :root{--topbar-h:calc(56px + env(safe-area-inset-top))}
+  #side{padding-top:calc(14px + env(safe-area-inset-top));padding-bottom:calc(12px + env(safe-area-inset-bottom))}
+  .rprog{top:env(safe-area-inset-top)}
+  /* the status bar's text is white, so light looks get a dark strip behind it */
+  html[data-theme="light"] .mtop{background-image:linear-gradient(rgba(0,0,0,.55),rgba(0,0,0,.55));background-repeat:no-repeat;background-size:100% env(safe-area-inset-top)}
+  html[data-theme="light"] #side{box-shadow:inset 0 env(safe-area-inset-top) 0 rgba(0,0,0,.55),0 10px 40px rgba(0,0,0,.35)}
+  /* messages sit above the bottom tab bar instead of on top of it */
+  .toast{bottom:calc(5rem + env(safe-area-inset-bottom))}
+  /* the look picker's two columns shrink to fit a phone instead of running off the side */
+  .lk-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .lk-tile{min-width:0}
+  .lk-chip{display:none}
+  .lk-modal{max-height:calc(100dvh - 2.5rem - env(safe-area-inset-top))}
+}
 </style>
 </head>
 <body>
@@ -6207,6 +6236,7 @@ const NAV=[
 ];
 const IS_MAC=/Mac|iPhone|iPad/.test(navigator.platform||navigator.userAgent||'');
 const MOD=IS_MAC?'⌘':'Ctrl ';
+const TAPW=window.matchMedia&&window.matchMedia('(hover: none)').matches?'tap':'click';
 
 function render(){
   const app=$('#app');
@@ -6735,10 +6765,10 @@ function cards(){
   const front = rev
     ? domTag+'<div class="fc-label">What is it?</div>'+
       '<div class="fc-prompt">'+esc(c.definition)+'</div>'+
-      '<div class="fc-hint">Name the term, then click to check</div>'
+      '<div class="fc-hint">Name the term, then '+TAPW+' to check</div>'
     : domTag+'<div class="fc-label">What does it do?</div>'+
       '<div class="fc-term">'+esc(c.term)+'</div>'+
-      '<div class="fc-hint">Say the meaning, then click to check</div>';
+      '<div class="fc-hint">Say the meaning, then '+TAPW+' to check</div>';
   const back = rev
     ? '<div class="fc-ans">'+esc(c.term)+'</div>'+
       '<div class="fc-ex"><b>In practice</b>'+esc(c.example)+'</div>'
@@ -7675,7 +7705,7 @@ function labBody(L,S2){
   if(L.type==='match'){
     const placed=Object.keys(S2.match);
     const pool=L.items.filter(i=>!placed.includes(i.id));
-    let h='<div class="sec-title">Items — click one, then click its category</div>'+
+    let h='<div class="sec-title">Items — '+TAPW+' one, then '+TAPW+' its category</div>'+
       '<div class="mt-pool" id="labPool">'+(pool.length?pool.map(i=>
         '<button class="mt-i '+(S2.sel===i.id?'sel':'')+'" draggable="true" data-mi="'+i.id+'">'+esc(i.text)+'</button>').join('')
         :'<span class="mt-empty">All items placed — check your work.</span>')+'</div>';
@@ -8249,7 +8279,7 @@ function lookTiles(){
 function lookModal(){
   return '<div class="modal-bg" id="lookBg"><div class="modal lk-modal" role="dialog" aria-label="Choose a look">'+
     '<div class="modal-t">'+ICON.palette+'Pick your look</div>'+
-    '<div class="modal-d">'+LOOKS.length+' looks, each with a light and a dark version. Click one and the whole app behind this window changes to match. Your questions, notes and progress stay exactly as they are. This window only opens once. Switch any time from the palette button at the bottom of the menu, from Settings, or with '+MOD+'K.</div>'+
+    '<div class="modal-d">'+LOOKS.length+' looks, each with a light and a dark version. '+(TAPW==='tap'?'Tap':'Click')+' one and the whole app behind this window changes to match. Your questions, notes and progress stay exactly as they are. This window only opens once. Switch any time from the palette button at the bottom of the menu, from Settings'+(TAPW==='tap'?'.':', or with '+MOD+'K.')+'</div>'+
     lookTiles()+
     '<div class="btn-row lk-foot"><span class="lk-now">Now wearing <b class="look-now">'+esc(lookName())+'</b></span>'+
       '<button class="btn" id="lookMode">'+(S.theme==='dark'?ICON.sun+'See it light':ICON.moon+'See it dark')+'</button>'+
@@ -8421,6 +8451,9 @@ initUI();
 if((S.lookAsked||0)<LOOK_ASK){ if(!S.lookAsked) S.look=LOOK_DEFAULT; applyLook(); ui.lookPicker=true; }
 // Ask the browser not to clear saved progress and settings when space runs low.
 try{ if(navigator.storage&&navigator.storage.persist) navigator.storage.persist().catch(()=>{}); }catch(e){}
+// Keep a copy of the app on the device so the home-screen version opens offline.
+if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol))
+  window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
 render();
 pomInt=setInterval(tickPom,1000);
 setInterval(()=>{ const c=document.getElementById('trayClock'); if(c) c.textContent=clockTxt(); },15000);
