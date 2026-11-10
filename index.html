@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>JAEBEASTY Cyber Lab v11</title>
+<title>JAEBEASTY Cyber Lab v12</title>
 <meta name="theme-color" content="#0b0a1a">
 <!-- installable on a phone's home screen (needs manifest.webmanifest, sw.js and icons/ beside this file) -->
 <link rel="manifest" href="manifest.webmanifest">
@@ -2407,6 +2407,60 @@ html[data-look="survey"] .reb-others{display:none}
 }
 /* touch screens: 16px text boxes, or iPhone Safari zooms the page in on every tap */
 @media (hover:none) and (pointer:coarse){input:not([type=checkbox]):not([type=radio]):not([type=range]),select,textarea{font-size:16px!important}}
+
+/* ═══════════ QUIZ: explanation under the answer choices ═══════════ */
+.xpl{margin-top:1.15rem;padding-top:1.1rem;border-top:1px solid var(--border)}
+/* Next / Save stay in reach while you read a long explanation */
+.q-next{position:sticky;bottom:calc(14px + env(safe-area-inset-bottom));z-index:4;margin-left:-.55rem;margin-right:-.55rem;padding:.55rem;
+  border-radius:var(--r-lg);background:color-mix(in srgb,var(--solid,var(--surface)) 90%,transparent);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+@media (max-width:720px){.q-next{bottom:calc(82px + env(safe-area-inset-bottom))}}
+/* Depth keeps its second-window feel: the explanation is a raised pane */
+html[data-look="depth"] .xpl{margin:1.4rem -.55rem 0;padding:1.1rem 1.15rem 1.2rem;border:0;border-radius:24px;background:var(--surface-2);box-shadow:var(--shadow-lg)}
+/* exam results: every missed question with its choices and explanation */
+.xr+.xr{margin-top:1.5rem;padding-top:1.4rem;border-top:1px solid var(--border)}
+.xr .q-text{font-size:1rem;margin:.35rem 0 .85rem}
+.xr-skip{margin-top:.6rem;font-size:.8rem;font-weight:650;color:var(--no)}
+
+/* ═══════════ COLOUR SCHEMES ═══════════ */
+html[data-scheme="ocean"]{--sc1:#7cc4ff;--sc2:#5eead4;--sc3:#818cf8;--sc-ink:#0b1220;--sc-p:52%}
+html[data-scheme="ocean"][data-theme="light"]{--sc1:#0369a1;--sc2:#0f766e;--sc3:#4f46e5;--sc-ink:#ffffff;--sc-p:30%}
+html[data-scheme="violet"]{--sc1:#c4b5fd;--sc2:#f0abfc;--sc3:#818cf8;--sc-ink:#0b1220;--sc-p:52%}
+html[data-scheme="violet"][data-theme="light"]{--sc1:#6d28d9;--sc2:#a21caf;--sc3:#4338ca;--sc-ink:#ffffff;--sc-p:30%}
+html[data-scheme="rose"]{--sc1:#fda4af;--sc2:#f9a8d4;--sc3:#fdba74;--sc-ink:#0b1220;--sc-p:52%}
+html[data-scheme="rose"][data-theme="light"]{--sc1:#be123c;--sc2:#be185d;--sc3:#c2410c;--sc-ink:#ffffff;--sc-p:30%}
+html[data-scheme="sunset"]{--sc1:#fdba74;--sc2:#fca5a5;--sc3:#fcd34d;--sc-ink:#0b1220;--sc-p:52%}
+html[data-scheme="sunset"][data-theme="light"]{--sc1:#c2410c;--sc2:#b91c1c;--sc3:#b45309;--sc-ink:#ffffff;--sc-p:30%}
+html[data-scheme="emerald"]{--sc1:#6ee7b7;--sc2:#5eead4;--sc3:#bef264;--sc-ink:#0b1220;--sc-p:52%}
+html[data-scheme="emerald"][data-theme="light"]{--sc1:#047857;--sc2:#0f766e;--sc3:#4d7c0f;--sc-ink:#ffffff;--sc-p:30%}
+html[data-scheme="gold"]{--sc1:#fcd34d;--sc2:#fbbf24;--sc3:#fdba74;--sc-ink:#0b1220;--sc-p:52%}
+html[data-scheme="gold"][data-theme="light"]{--sc1:#a16207;--sc2:#92400e;--sc3:#b45309;--sc-ink:#ffffff;--sc-p:30%}
+html[data-scheme="neon"]{--sc1:#22d3ee;--sc2:#a3e635;--sc3:#e879f9;--sc-ink:#0b1220;--sc-p:52%}
+html[data-scheme="neon"][data-theme="light"]{--sc1:#0e7490;--sc2:#4d7c0f;--sc3:#a21caf;--sc-ink:#ffffff;--sc-p:30%}
+html[data-scheme="graphite"]{--sc1:#e5e7eb;--sc2:#94a3b8;--sc3:#64748b;--sc-ink:#0b1220;--sc-p:52%}
+html[data-scheme="graphite"][data-theme="light"]{--sc1:#1f2937;--sc2:#475569;--sc3:#334155;--sc-ink:#ffffff;--sc-p:30%}
+html[data-scheme]:not([data-scheme="look"])[data-look],
+html[data-scheme]:not([data-scheme="look"]) .lk-tile[data-look]{
+  --accent:var(--sc1);--accent-2:var(--sc2);--accent-ink:var(--sc-ink);
+  --accent-soft:color-mix(in srgb,var(--sc1) 16%,transparent);
+  --grad:linear-gradient(135deg,var(--sc1),var(--sc2));--grad-ink:var(--sc-ink);
+  --a1:color-mix(in srgb,var(--sc1) var(--sc-p),transparent);
+  --a2:color-mix(in srgb,var(--sc2) var(--sc-p),transparent);
+  --a3:color-mix(in srgb,var(--sc3) var(--sc-p),transparent);
+  --trace:var(--sc1);--live:var(--sc2);--trace-dim:color-mix(in srgb,var(--sc1) 35%,var(--surface));
+  --rim:var(--sc1);--orbit:color-mix(in srgb,var(--sc1) 30%,transparent);
+}
+.sch-wrap{margin-top:1.3rem;padding-top:1.1rem;border-top:1px solid var(--border)}
+.sch-wrap .set-d{margin:.2rem 0 .85rem}
+.sch-row{display:flex;flex-wrap:wrap;gap:.5rem}
+.sch{display:inline-flex;align-items:center;gap:.45rem;padding:.3rem .75rem .3rem .32rem;border-radius:999px;cursor:pointer;
+  border:1px solid var(--border);background:var(--surface-2);color:var(--text-2);font-size:.8rem;font-weight:600;font-family:var(--font)}
+.sch:hover{color:var(--text);border-color:var(--border-2)}
+.sch.on{color:var(--text);border-color:var(--accent);box-shadow:0 0 0 2px color-mix(in srgb,var(--accent) 35%,transparent)}
+.sch i{width:22px;height:22px;border-radius:50%;flex-shrink:0;background:linear-gradient(135deg,var(--d1),var(--d2));box-shadow:inset 0 0 0 1px rgba(255,255,255,.18)}
+html[data-theme="light"] .sch i{background:linear-gradient(135deg,var(--l1),var(--l2));box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
+.sch[data-schemepick="look"] i,html[data-theme="light"] .sch[data-schemepick="look"] i{background:conic-gradient(from 200deg,#7cc4ff,#c4b5fd,#fda4af,#fdba74,#fcd34d,#6ee7b7,#7cc4ff)}
+.lk-sch{margin-top:1.1rem}
+.lk-sch .set-n{margin-bottom:.55rem}
 </style>
 </head>
 <body>
@@ -6707,6 +6761,29 @@ function optExtra(q,k,s,done){
   return '<span class="opt-x"><span class="opt-sig"><span class="bars '+sig[0]+'"><i></i><i></i><i></i><i></i></span>'+sig[1]+'</span><span class="opt-why">'+esc(txt)+'</span></span>';
 }
 
+// The breakdown of a question: why the right answer is right and why each
+// other choice is not. The quiz shows it under the answer choices once you
+// answer; the exam results show it under each missed question. Looks with
+// their own vocabulary (Transit, Boss Fight…) keep their headings.
+function explainHtml(q,picked,compact){
+  const key=ansArr(q), copy=LOOK_COPY[curLook()], wr=wrongKeys(q);
+  let h='<div class="xpl"><div class="sec-title">'+ICON.check+(copy?copy.right(key.join(' and ')):'Why '+key.join(' and ')+(key.length>1?' are':' is')+' right')+'</div>';
+  key.forEach(k=>{ h+='<div class="reb ok"><span class="k">'+k+'</span><span>'+esc(q.options[k])+'</span></div>'; });
+  h+='<div class="lead-txt" style="margin-top:.75rem">'+nlbr(q.lead)+'</div>';
+  if(wr.length){
+    h+='<div class="reb-others"><div class="sec-title" style="margin-top:1.25rem">'+ICON.weak+(copy?copy.others:'Why the others are not')+'</div>';
+    wr.forEach(k=>{
+      const yours=picked.includes(k);
+      h+='<div class="reb'+(yours?' no':'')+'"><span class="k">'+k+'</span><span>'+
+         (yours?'<span class="yours">You chose this. </span>':'')+esc(q.why[k]||'')+'</span></div>';
+    });
+    h+='</div>';
+  }
+  if(q.note) h+='<div class="reb-note">'+esc(q.note)+'</div>';
+  if(q.src&&q.src.length) h+=compact?srcLine(q):'<div class="sec-title" style="margin-top:1.25rem">'+ICON.book+'Read it in your books</div>'+srcBlock(q);
+  return h+'</div>';
+}
+
 function quiz(){
   if(!ui.quiz) newQuiz();
   const {q,picked}=ui.quiz;
@@ -6748,7 +6825,8 @@ function quiz(){
   if(done){
     h+='<div class="explain '+(correct?'ok':'no')+'" style="padding:.7rem .85rem"><span class="eh" style="margin:0">'+
        (correct?'Correct':'Not quite — the answer is '+key.join(' and '))+'</span></div>';
-    h+='<div class="btn-row" style="margin-top:1.15rem">'+
+    h+=explainHtml(q,picked,false);
+    h+='<div class="btn-row q-next" style="margin-top:1.15rem">'+
        '<button class="btn btn-pri" id="nextQ">Next question'+ICON.right+'</button>'+
        '<button class="btn" data-mark="q:'+q.id+'">'+ICON.mark+(P.marks['q:'+q.id]?'Saved':'Save')+'</button>'+
        '</div>';
@@ -6757,28 +6835,7 @@ function quiz(){
   }
   h+='</div>';
 
-  // right column — the breakdown once answered, session stats before that
-  if(done){
-    h+='<div class="card card-pad">'+
-      '<div class="sec-title">'+ICON.check+(LOOK_COPY[curLook()]?LOOK_COPY[curLook()].right(key.join(' and ')):'Why '+key.join(' and ')+(key.length>1?' are':' is')+' right')+'</div>';
-    key.forEach(k=>{ h+='<div class="reb ok"><span class="k">'+k+'</span><span>'+esc(q.options[k])+'</span></div>'; });
-    h+='<div class="lead-txt" style="margin-top:.75rem">'+nlbr(q.lead)+'</div>';
-    const wr=wrongKeys(q);
-    if(wr.length){
-      h+='<div class="reb-others"><div class="sec-title" style="margin-top:1.25rem">'+ICON.weak+(LOOK_COPY[curLook()]?LOOK_COPY[curLook()].others:'Why the others are not')+'</div>';
-      wr.forEach(k=>{
-        const yours=picked.includes(k);
-        h+='<div class="reb'+(yours?' no':'')+'"><span class="k">'+k+'</span><span>'+
-           (yours?'<span class="yours">You chose this. </span>':'')+esc(q.why[k]||'')+'</span></div>';
-      });
-      h+='</div>';
-    }
-    if(q.note) h+='<div class="reb-note">'+esc(q.note)+'</div>';
-    if(q.src&&q.src.length) h+='<div class="sec-title" style="margin-top:1.25rem">'+ICON.book+'Read it in your books</div>'+srcBlock(q);
-    h+='</div></div>';
-    return h;
-  }
-
+  // right column — session progress, before and after answering
   h+='<div class="stack"><div class="card card-pad"><div class="sec-title">'+ICON.target+'This session</div>'+
      '<div class="stat-v" style="font-size:1.5rem">'+todayCount()+' <small>today</small></div>'+
      '<div class="bar"><i style="width:'+Math.min(100,Math.round(todayCount()/S.dailyGoal*100))+'%"></i></div>'+
@@ -7135,13 +7192,15 @@ function examResult(){
 
   const wrong=e.ids.map(id=>examQ(id)).filter(q=>q&&!sameSet(toArr(e.ans[q.id]),ansArr(q)));
   if(wrong.length){
-    h+='<div class="card card-pad"><div class="sec-title">'+ICON.weak+'Review — '+wrong.length+' missed</div><div class="stack" style="gap:1rem">';
+    h+='<div class="card card-pad"><div class="sec-title">'+ICON.weak+'Review — '+wrong.length+' missed</div><div class="xr-list">';
     wrong.slice(0,25).forEach(q=>{
-      h+='<div style="border-left:3px solid var(--no);padding-left:.9rem">'+
-        '<div style="font-size:.875rem;font-weight:600;line-height:1.5;margin-bottom:.4rem">'+esc(q.question)+'</div>'+
-        '<div style="font-size:.82rem;color:var(--text-2);margin-bottom:.3rem">You chose: <b style="color:var(--no)">'+(toArr(e.ans[q.id]).length?toArr(e.ans[q.id]).map(k=>esc(q.options[k])).join(' + '):'nothing')+'</b></div>'+
-        '<div style="font-size:.82rem;color:var(--text-2);margin-bottom:.45rem">Correct: <b style="color:var(--ok)">'+ansArr(q).map(k=>esc(q.options[k])).join(' + ')+'</b></div>'+
-        '<div style="font-size:.83rem;color:var(--text-2);line-height:1.6">'+nlbr(explText(q))+'</div>'+srcLine(q)+'</div>';
+      const chose=toArr(e.ans[q.id]), key=ansArr(q);
+      h+='<div class="xr"><div class="kicker">Question '+(e.ids.indexOf(q.id)+1)+' · Domain '+q.domain+' · '+esc(shortDom(CERT.domains[q.domain].name))+selBadge(q)+'</div>'+
+        '<div class="q-text">'+esc(q.question)+'</div>'+preBlock(q)+
+        '<div class="opts">'+optKeys(q).map(k=>{ const c=key.includes(k)?'ok':chose.includes(k)?'no':'';
+          return '<button class="opt '+c+'" disabled><span class="k">'+k+'</span><span>'+esc(q.options[k])+'</span></button>'; }).join('')+'</div>'+
+        (chose.length?'':'<div class="xr-skip">You left this one unanswered.</div>')+
+        explainHtml(q,chose,true)+'</div>';
     });
     if(wrong.length>25) h+='<div style="font-size:.82rem;color:var(--text-3)">…and '+(wrong.length-25)+' more.</div>';
     h+='</div></div>';
@@ -8298,6 +8357,9 @@ function settings(){
     '<div class="card card-pad"><div class="sec-title">'+ICON.palette+'Look</div>'+
       '<div class="set-d" style="margin-bottom:1.1rem">'+LOOKS.length+' complete looks. Each one changes shape, type, texture and colour, has its own light and dark version, and gives Security+ its own accent. Now wearing <b class="look-now">'+esc(lookName())+'</b>.</div>'+
       lookTiles()+
+      '<div class="sch-wrap"><div class="set-n">Colour scheme</div>'+
+        '<div class="set-d">Recolour the look you are wearing: buttons, highlights, the glowing animated background and the moving scenes. Right and wrong answers stay green and red.</div>'+
+        schemeRow()+'</div>'+
     '</div>'+
     '<div class="card card-pad"><div class="sec-title">'+ICON.cog+'Display</div>'+
       row('Light or dark','Every look has both. Match system follows your Mac',
@@ -8394,6 +8456,7 @@ function bind(){
   const tb=$('#themeBtn'); if(tb) tb.onclick=toggleTheme;
   const lkb=$('#lookBtn'); if(lkb) lkb.onclick=()=>{ ui.lookPicker=true; render(); };
   document.querySelectorAll('[data-lookpick]').forEach(el=>el.onclick=()=>pickLook(el.dataset.lookpick));
+  document.querySelectorAll('[data-schemepick]').forEach(el=>el.onclick=()=>pickScheme(el.dataset.schemepick));
   const lkd=$('#lookDone'); if(lkd) lkd.onclick=closeLookPicker;
   const lkg=$('#lookBg'); if(lkg) lkg.onclick=e=>{ if(e.target===lkg) closeLookPicker(); };
   const lkm=$('#lookMode'); if(lkm) lkm.onclick=toggleTheme;
@@ -8546,7 +8609,7 @@ function bind(){
 const LOOKS=[
   {id:'mist',     name:'Mist',         tag:'Soft frost',     blurb:'Fog blue and grey under the heaviest frost. No borders anywhere, soft rounded answers, and a gentle glow on the right one.'},
   {id:'clear',    name:'Clear Pane',   tag:'See-through',    blurb:'Almost clear glass over a dusk backdrop. Each answer and each explanation floats as its own little pane.'},
-  {id:'depth',    name:'Depth',        tag:'Layered glass',  blurb:'Stone and sage with very round panes. Once you answer, the explanation slides in front of the question like a second window.'},
+  {id:'depth',    name:'Depth',        tag:'Layered glass',  blurb:'Stone and sage with very round panes. Once you answer, the explanation rises under the answers as a second pane of glass.'},
   {id:'sea',      name:'Sea Glass',    tag:'Thick glass',    blurb:'Thick, tumbled sea-green slabs with a bevel. The answers are chunky tiles in a 2×2 grid.'},
   {id:'smoke',    name:'Smoked',       tag:'Tinted glass',   blurb:'Tinted smoke glass with hairline edges and warm amber. Tight corners, keycap letters and dense rows.'},
   {id:'vellum',   name:'Vellum',       tag:'Paper glass',    blurb:'Frosted tracing paper with a faint grain and a book serif. Your wrong pick is struck through and the right answer is circled.'},
@@ -8672,6 +8735,7 @@ function lookModal(){
     '<div class="modal-t">'+ICON.palette+'Pick your look</div>'+
     '<div class="modal-d">'+LOOKS.length+' looks, each with a light and a dark version. '+(TAPW==='tap'?'Tap':'Click')+' one and the whole app behind this window changes to match. Your questions, notes and progress stay exactly as they are. This window only opens once. Switch any time from the palette button at the bottom of the menu, from Settings'+(TAPW==='tap'?'.':', or with '+MOD+'K.')+'</div>'+
     lookTiles()+
+    '<div class="lk-sch"><div class="set-n">Colours</div>'+schemeRow()+'</div>'+
     '<div class="btn-row lk-foot"><span class="lk-now">Now wearing <b class="look-now">'+esc(lookName())+'</b></span>'+
       '<button class="btn" id="lookMode">'+(S.theme==='dark'?ICON.sun+'See it light':ICON.moon+'See it dark')+'</button>'+
       '<button class="btn btn-pri" id="lookDone">'+ICON.check+'Use this look</button></div>'+
@@ -8695,11 +8759,41 @@ function effTheme(){
     return (window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';
   return S.mode==='light'?'light':'dark';
 }
+// ── Colour schemes ───────────────────────────────────────────────────
+// A scheme recolours whichever look you wear: buttons and highlights, the
+// glowing animated backdrop and the main scene colours. Right and wrong stay
+// green and red. 'look' keeps each look's own colours. The colours live in
+// the stylesheet (html[data-scheme=…]); this list drives the swatches.
+const SCHEMES=[
+  {id:'look',name:'Look’s own'},
+  {id:'ocean',name:'Ocean',d:['#7cc4ff','#5eead4'],l:['#0369a1','#0f766e']},
+  {id:'violet',name:'Violet',d:['#c4b5fd','#f0abfc'],l:['#6d28d9','#a21caf']},
+  {id:'rose',name:'Rose',d:['#fda4af','#f9a8d4'],l:['#be123c','#be185d']},
+  {id:'sunset',name:'Sunset',d:['#fdba74','#fca5a5'],l:['#c2410c','#b91c1c']},
+  {id:'emerald',name:'Emerald',d:['#6ee7b7','#5eead4'],l:['#047857','#0f766e']},
+  {id:'gold',name:'Gold',d:['#fcd34d','#fbbf24'],l:['#a16207','#92400e']},
+  {id:'neon',name:'Neon',d:['#22d3ee','#a3e635'],l:['#0e7490','#4d7c0f']},
+  {id:'graphite',name:'Graphite',d:['#e5e7eb','#94a3b8'],l:['#1f2937','#475569']}
+];
+const schemeId=()=>SCHEMES.some(x=>x.id===S.scheme)?S.scheme:'look';
+function schemeRow(){
+  const cur=schemeId();
+  return '<div class="sch-row" role="radiogroup" aria-label="Colour scheme">'+SCHEMES.map(x=>
+    '<button class="sch'+(x.id===cur?' on':'')+'" data-schemepick="'+x.id+'" role="radio" aria-checked="'+(x.id===cur)+'"'+
+    (x.d?' style="--d1:'+x.d[0]+';--d2:'+x.d[1]+';--l1:'+x.l[0]+';--l2:'+x.l[1]+'"':'')+'><i></i>'+esc(x.name)+'</button>').join('')+'</div>';
+}
+function pickScheme(id){
+  if(!SCHEMES.some(x=>x.id===id)) return;
+  S.scheme=id; applyLook(); saveS();
+  document.querySelectorAll('.sch').forEach(b=>{ const on=b.dataset.schemepick===id; b.classList.toggle('on',on); b.setAttribute('aria-checked',on?'true':'false'); });
+}
+
 function applyLook(){
   S.theme=effTheme();
   const r=document.documentElement;
   r.setAttribute('data-theme',S.theme);
   r.setAttribute('data-look',curLook());
+  r.setAttribute('data-scheme',schemeId());
   r.setAttribute('data-fx',S.fx===false?'off':'on');
   r.setAttribute('data-side',S.side==='mini'?'mini':'full');
   r.style.setProperty('--fs',(S.textSize||16)+'px');
@@ -8813,6 +8907,7 @@ S.mode=S.mode||(S.theme==='dark'?'dark':S.theme==='light'?'light':'system');
 S.fx=S.fx!==false;
 S.readFont=READ_FONTS.some(f=>f.v===S.readFont)?S.readFont:'look';
 S.readFocus=!!S.readFocus;
+S.scheme=SCHEMES.some(x=>x.id===S.scheme)?S.scheme:'look';
 S.side=S.side==='mini'?'mini':'full';
 S.textSize=S.textSize||16;
 S.mixAnswers=S.mixAnswers!==false;
