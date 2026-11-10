@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>JAEBEASTY Cyber Lab v10</title>
+<title>JAEBEASTY Cyber Lab v11</title>
 <meta name="theme-color" content="#0b0a1a">
 <!-- installable on a phone's home screen (needs manifest.webmanifest, sw.js and icons/ beside this file) -->
 <link rel="manifest" href="manifest.webmanifest">
@@ -2348,6 +2348,52 @@ html[data-look="survey"] .reb-others{display:none}
   .lk-chip{display:none}
   .lk-modal{max-height:calc(100dvh - 2.5rem - env(safe-area-inset-top))}
 }
+
+/* ═══════════ SUBNETTING SIMULATOR ═══════════ */
+.sn-bar{display:flex;flex-wrap:wrap;align-items:center;gap:.65rem .9rem}
+.sn-bar .chip-row{flex:1 1 auto}
+.sn-top{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;margin-bottom:.85rem}
+.sn-meta{margin-left:auto;font-size:.76rem;color:var(--text-3);font-weight:600;font-variant-numeric:tabular-nums}
+.sn-q{font-size:1.06rem;line-height:1.6;color:var(--text)}
+.sn-q code,.sn-steps code{font-family:var(--mono);font-size:.9em;background:var(--surface-2);padding:.08rem .38rem;border-radius:var(--r-xs);color:var(--accent);white-space:nowrap}
+.sn-count{margin:.6rem 0 1rem;font:700 .68rem/1.2 var(--font-label);letter-spacing:var(--label-ls);text-transform:uppercase;color:var(--text-3)}
+.sn-grid{margin-bottom:1rem}
+.sn-grid .fld{display:block;margin:0}
+.sn-ltr{display:inline-grid;place-items:center;width:1.3rem;height:1.3rem;border-radius:50%;flex-shrink:0;background:var(--surface-3);color:var(--text-2);font:700 .7rem/1 var(--font-label)}
+.sn-in{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.fld.good .sn-in{border-color:var(--ok)}
+.fld.bad .sn-in{border-color:var(--no)}
+.fld.good .sn-ltr{background:var(--ok-bg);color:var(--ok)}
+.fld.bad .sn-ltr{background:var(--no-bg);color:var(--no)}
+.fld-msg b{font-family:var(--mono);font-weight:700}
+.sn-card .lab-result{margin-bottom:.9rem}
+.sn-work{margin-top:1.25rem;padding-top:1.1rem;border-top:1px solid var(--border)}
+.sn-steps{margin:0;padding-left:1.4rem;display:flex;flex-direction:column;gap:.7rem;font-size:.9rem;line-height:1.65;color:var(--text-2)}
+.sn-steps li{padding-left:.2rem}
+.sn-steps li::marker{font-weight:700;color:var(--accent)}
+.sn-steps b{color:var(--text)}
+.sn-alt{display:block;margin-top:.3rem;font-size:.82rem;color:var(--text-3)}
+.sn-bin{font-family:var(--mono);letter-spacing:.05em;white-space:nowrap}
+.sn-nb{color:var(--accent);font-weight:700}
+.sn-hb{opacity:.6}
+.sn-stats{display:grid;grid-template-columns:1fr 1fr;gap:.85rem .7rem}
+.sn-stat-v{font:800 1.3rem/1.1 var(--font-head);font-variant-numeric:tabular-nums;color:var(--text)}
+.sn-stat-v small{font-size:.75rem;font-weight:700;color:var(--text-3)}
+.sn-stat-l{font-size:.72rem;color:var(--text-3);font-weight:600;margin-top:.15rem}
+.sn-goal{font-size:.8rem;color:var(--text-2);margin-top:1rem}
+.sn-goal.ok{display:flex;align-items:center;gap:.35rem;color:var(--ok);font-weight:650}
+.sn-goal svg{width:14px;height:14px}
+.sn-by{margin-top:1.1rem;padding-top:.9rem;border-top:1px solid var(--border)}
+.sn-by-row{display:grid;grid-template-columns:7.2rem minmax(0,1fr) 3rem;align-items:center;gap:.6rem;font-size:.78rem;margin-top:.55rem}
+.sn-by-row .bar{margin:0}
+.sn-by-row span:last-child{text-align:right;color:var(--text-3);font-variant-numeric:tabular-nums}
+.sn-method{display:flex;flex-direction:column;gap:.6rem}
+.sn-method b{color:var(--text)}
+@media (max-width:720px){.sn-q{font-size:1rem}.sn-bar{gap:.6rem}
+  /* while typing on a phone, the bottom tab bar would ride up above the keyboard and cover the form */
+  html:has(.page :is(input,textarea,select):focus) :is(.tabbar,.fab){display:none}}
+/* touch screens: 16px text boxes, or iPhone Safari zooms the page in on every tap */
+@media (hover:none) and (pointer:coarse){input:not([type=checkbox]):not([type=radio]):not([type=range]),select,textarea{font-size:16px!important}}
 </style>
 </head>
 <body>
@@ -5565,6 +5611,13 @@ const SEC_REFERENCES = [
 // ═══════════════════════════════════════════════════════════════════
 const NET_LABS = [
 {
+  id:'nl_subnet', domain:1, est:2, type:'subnet',
+  title:'Subnetting simulator',
+  blurb:'Endless random problems: find the subnet, count hosts and subnets, convert masks and right-size networks, with the working shown.',
+  scenario:'<p><b>A fresh subnetting problem every time.</b> Pick a question type and a prefix range, fill in every part, then check. Each answer comes with the working, step by step, so you can see exactly where a mistake crept in.</p>'+
+    '<p>Get 10 problems fully right to complete the lab. Every one you get right earns XP; <b>Show me how</b> reveals the working without credit.</p>'
+},
+{
   id:'nl_router', domain:2, est:10, type:'cli',
   title:'Configure a branch router',
   blurb:'Bring up two interfaces with correct addressing and add a default route back to headquarters.',
@@ -5722,6 +5775,13 @@ const NET_LABS = [
 ];
 
 const SEC_LABS = [
+{
+  id:'sl_subnet', domain:3, est:2, type:'subnet',
+  title:'Subnetting simulator',
+  blurb:'Endless random problems: find the subnet, count hosts and subnets, convert masks and right-size networks, with the working shown.',
+  scenario:'<p><b>A fresh subnetting problem every time.</b> Pick a question type and a prefix range, fill in every part, then check. Each answer comes with the working, step by step, so you can see exactly where a mistake crept in.</p>'+
+    '<p>Get 10 problems fully right to complete the lab. Every one you get right earns XP; <b>Show me how</b> reveals the working without credit.</p>'
+},
 {
   id:'sl_harden', domain:4, est:12, type:'cli',
   title:'Harden a router for secure management',
@@ -7594,6 +7654,319 @@ function sameNet(ip,mask,t){
   return i.every((o,k)=>(o&m[k])===(x[k]&m[k]));
 }
 
+// ═══════════════════════════════════════════════════════════════════
+// SUBNETTING SIMULATOR — endless random problems with the working shown
+// Lives in Labs as type 'subnet'. Every problem is generated fresh; the
+// answer, the grading and the step-by-step working all come from the
+// same integer maths, so they can never disagree.
+// ═══════════════════════════════════════════════════════════════════
+const SN_TYPES=[
+  {k:'mix',l:'Mixed'},
+  {k:'subnet',l:'Find the subnet'},
+  {k:'hosts',l:'Usable hosts'},
+  {k:'count',l:'Subnet count'},
+  {k:'mask',l:'Masks'},
+  {k:'fit',l:'Right-size'}
+];
+const SN_LEVELS=[{k:'easy',l:'/24–/30',lo:24},{k:'med',l:'/16–/30',lo:16},{k:'hard',l:'/8–/30',lo:8}];
+const SN_DONE=10;     // problems fully right to mark the lab complete
+const SN_XP=6;        // XP per problem fully right
+
+const snRand=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const snPick=a=>a[Math.floor(Math.random()*a.length)];
+const snMask=p=>p?(0xFFFFFFFF<<(32-p))>>>0:0;
+const snIpInt=(a,b,c,d)=>((a<<24)>>>0)+(b<<16)+(c<<8)+d;
+const snIp=n=>[n>>>24,(n>>>16)&255,(n>>>8)&255,n&255].join('.');
+const snO=(n,i)=>(n>>>(24-8*i))&255;                 // octet i (0-3) of an address
+const snNum=n=>Number(n).toLocaleString('en-US');
+const snOct=i=>['1st','2nd','3rd','4th'][i];
+const snPow=(b,e)=>b+'<sup>'+e+'</sup>';
+const snCode=t=>'<code>'+t+'</code>';
+const snType=()=>SN_TYPES.some(t=>t.k===S.snType)?S.snType:'mix';
+const snLevel=()=>SN_LEVELS.some(l=>l.k===S.snLevel)?S.snLevel:'easy';
+
+// A believable starting address: mostly private ranges, sometimes public.
+function snBase(){
+  const r=Math.random();
+  if(r<.4) return snIpInt(192,168,snRand(0,255),snRand(0,255));
+  if(r<.7) return snIpInt(10,snRand(0,255),snRand(0,255),snRand(0,255));
+  if(r<.85) return snIpInt(172,snRand(16,31),snRand(0,255),snRand(0,255));
+  return snIpInt(snPick([23,45,64,98,131,155,198,203,209]),snRand(0,255),snRand(0,255),snRand(0,255));
+}
+// Prefix in [lo,hi]; prefixes on an octet edge (/8, /16, /24) only turn up some of the time.
+function snPfx(lo,hi,edge){ for(;;){ const p=snRand(lo,hi); if(p%8||Math.random()<edge) return p; } }
+// Where a prefix's boundary falls: octet index, block size there, mask value there.
+function snSplit(p){
+  if(p%8===0) return {i:p/8-1,b:1,m:255};
+  const m=(0xFF<<(8-p%8))&255;
+  return {i:Math.floor(p/8),b:256-m,m};
+}
+function snBin(v,k){
+  const b=v.toString(2).padStart(8,'0');
+  return '<span class="sn-bin"><span class="sn-nb">'+b.slice(0,k)+'</span><span class="sn-hb">'+b.slice(k)+'</span></span>';
+}
+// "0 16 32 48 …" with the boundary we land on in bold; long lists are trimmed around it.
+function snBounds(b,hit){
+  const all=[]; for(let x=0;x<256;x+=b) all.push(x);
+  let show=all;
+  if(all.length>9){
+    const i=all.indexOf(hit), keep=new Set([0,1,2,i-1,i,i+1].filter(j=>j>=0&&j<all.length));
+    show=[]; let last=-1;
+    all.forEach((x,j)=>{ if(keep.has(j)){ if(last>=0&&j>last+1) show.push('…'); show.push(x); last=j; } });
+    if(last<all.length-1) show.push('…');
+  }
+  return show.map(x=>x===hit?'<b>'+x+'</b>':x).join(' ');
+}
+// "/21 = 8 + 8 + 5" and the octet those leftover bits make.
+function snBits(p){
+  const r=p%8, parts=[]; for(let i=0;i<Math.floor(p/8);i++) parts.push(8); if(r) parts.push(r);
+  const vals=[128,64,32,16,8,4,2,1].slice(0,r);
+  return {parts:parts.join(' + '),r,vals:vals.join(' + '),oct:vals.reduce((a,b)=>a+b,0)};
+}
+function snMaskToPfx(m,p){
+  const per=[0,1,2,3].map(i=>{ const v=snO(m,i), n=v.toString(2).replace(/0/g,'').length;
+    return v===255||v===0?v+' → '+n:v+' ('+snBin(v,n)+') → '+n; });
+  return 'Count the 1-bits in each octet of '+snCode(snIp(m))+': '+per.join(' · ')+'. Total: '+snBits(p).parts+' = <b>/'+p+'</b>.';
+}
+const snHostsStep=(p,lead)=>(lead||'Host bits')+': 32 − '+p+' = <b>'+(32-p)+'</b>, so usable hosts = '+snPow(2,32-p)+' − 2 = <b>'+snNum(2**(32-p)-2)+'</b>.';
+
+// ── Generators ─────────────────────────────────────────────────────
+function snGenSubnet(lo){
+  const p=snPfx(lo,30,.25), m=snMask(p), size=2**(32-p);
+  const net=(snBase()&m)>>>0, ip=net+snRand(1,size-2), bc=net+size-1;
+  const asMask=Math.random()<.35, st=[];
+  const q=asMask
+    ?'A host has the address '+snCode(snIp(ip))+' and the mask '+snCode(snIp(m))+'. Work out the subnet it belongs to.'
+    :'A host is configured as '+snCode(snIp(ip)+'/'+p)+'. Work out the subnet it belongs to.';
+  if(asMask) st.push(snMaskToPfx(m,p));
+  st.push(snHostsStep(p));
+  if(p%8===0){
+    const n=p/8, many=4-n>1;
+    st.push('/'+p+' ends exactly on an octet edge: the first '+n+' octet'+(n>1?'s are':' is')+' network, the rest '+(many?'are':'is')+' host.');
+    st.push('Network: set the host octet'+(many?'s':'')+' to 0 → <b>'+snIp(net)+'</b>. Broadcast: set '+(many?'them':'it')+' to 255 → <b>'+snIp(bc)+'</b>.');
+  } else {
+    const sp=snSplit(p), v=snO(ip,sp.i), q2=Math.floor(v/sp.b), lb=q2*sp.b, k=p%8;
+    st.push('The boundary falls in the <b>'+snOct(sp.i)+' octet</b>, where the mask is '+sp.m+'. Block size = 256 − '+sp.m+' = <b>'+sp.b+'</b>.');
+    st.push('Count up by '+sp.b+': '+snBounds(sp.b,lb)+'. The host\'s '+snOct(sp.i)+' octet is '+v+', so the largest boundary at or below it is <b>'+lb+'</b>.'+
+      '<span class="sn-alt">Shortcut: '+v+' ÷ '+sp.b+' = '+q2+' remainder '+(v%sp.b)+', and '+q2+' × '+sp.b+' = '+lb+'. In binary, '+v+' = '+snBin(v,k)+'; keep the first '+k+' bit'+(k>1?'s':'')+' and zero the rest: '+snBin(lb,k)+' = '+lb+'.</span>');
+    st.push('Network = <b>'+snIp(net)+'</b>'+(sp.i<3?' (every octet after the '+snOct(sp.i)+' becomes 0)':'')+'. Broadcast: '+lb+' + '+sp.b+' − 1 = '+(lb+sp.b-1)+' → <b>'+snIp(bc)+'</b>'+(sp.i<3?' (every octet after it becomes 255)':'')+'.');
+  }
+  st.push('First usable = network + 1 → <b>'+snIp(net+1)+'</b>. Last usable = broadcast − 1 → <b>'+snIp(bc-1)+'</b>.');
+  return {q,steps:st,asks:[
+    {id:'net',l:'Network address',k:'ip',w:net},
+    {id:'first',l:'First usable host',k:'ip',w:net+1},
+    {id:'last',l:'Last usable host',k:'ip',w:bc-1},
+    {id:'bc',l:'Broadcast address',k:'ip',w:bc},
+    {id:'hosts',l:'Usable hosts',k:'num',w:size-2}]};
+}
+function snGenHosts(lo){
+  const p=snPfx(lo,30,.2), hb=32-p, m=snMask(p), asMask=Math.random()<.3, st=[];
+  const q=asMask?'A subnet uses the mask '+snCode(snIp(m))+'. How big is it?':'A subnet is assigned '+snCode('/'+p)+'. How big is it?';
+  if(asMask) st.push(snMaskToPfx(m,p));
+  st.push('One prefix is given, so this is a <b>size</b> question.');
+  st.push('Host bits: 32 − '+p+' = <b>'+hb+'</b>.');
+  st.push('Total addresses: '+snPow(2,hb)+' = <b>'+snNum(2**hb)+'</b>.');
+  st.push('Take away the network and broadcast addresses: '+snNum(2**hb)+' − 2 = <b>'+snNum(2**hb-2)+'</b> usable hosts.');
+  return {q,steps:st,asks:[
+    {id:'hb',l:'Host bits',k:'num',w:hb},
+    {id:'total',l:'Total addresses',k:'num',w:2**hb},
+    {id:'hosts',l:'Usable hosts',k:'num',w:2**hb-2}]};
+}
+function snGenCount(lv){
+  const parent=lv==='easy'?24:lv==='med'?snRand(16,24):snRand(8,22);
+  const b=snRand(1,Math.min(lv==='easy'?6:lv==='med'?10:12,30-parent)), child=parent+b;
+  const base=(snBase()&snMask(parent))>>>0, n=2**b, size=2**(32-child), k=snRand(2,Math.min(n,6));
+  const nets=[]; for(let j=0;j<k;j++) nets.push(base+j*size);
+  const sp=snSplit(child), roll=nets.some((x,j)=>j&&snO(x,sp.i)<snO(nets[j-1],sp.i));
+  const st=[
+    'Two prefixes are given, so the subnet <b>count</b> is available.',
+    'Borrowed bits: '+child+' − '+parent+' = <b>'+b+'</b> (count from where you started, not from 32). Subnets: '+snPow(2,b)+' = <b>'+snNum(n)+'</b>.',
+    snHostsStep(child,'Host bits in each /'+child),
+    'Block size for /'+child+': <b>'+sp.b+'</b> in the '+snOct(sp.i)+' octet. Subnet #1 starts at '+snCode(snIp(base))+' and each one after adds '+sp.b+
+      (roll?' (past 255 it rolls over into the octet before)':'')+': '+
+      nets.map((x,j)=>'#'+(j+1)+' '+(j===k-1?'<b>'+snIp(x)+'</b>':snIp(x))).join(' · ')+'.'
+  ];
+  return {q:snCode(snIp(base)+'/'+parent)+' is divided into '+snCode('/'+child)+' subnets.',steps:st,asks:[
+    {id:'bb',l:'Borrowed bits',k:'num',w:b},
+    {id:'subs',l:'Number of subnets',k:'num',w:n},
+    {id:'hosts',l:'Usable hosts per subnet',k:'num',w:size-2},
+    {id:'kth',l:'Network address of subnet #'+k,k:'ip',w:nets[k-1]}]};
+}
+function snGenMask(lo){
+  const p=snPfx(lo,30,0), m=snMask(p), sp=snSplit(p), bt=snBits(p);
+  const hosts={id:'hosts',l:'Usable hosts',k:'num',w:2**(32-p)-2};
+  if(Math.random()<.5){
+    return {q:'Write '+snCode('/'+p)+' as a dotted-decimal subnet mask.',steps:[
+      'Split the prefix into octets: /'+p+' = '+bt.parts+'. Each full 8 bits is '+snCode('255')+'.',
+      'The '+snOct(sp.i)+' octet gets '+bt.r+' one-bit'+(bt.r>1?'s':'')+': '+snBin(bt.oct,bt.r)+' = '+bt.vals+' = <b>'+bt.oct+'</b>.'+(sp.i<3?' Every octet after it is 0,':'')+' So the mask is <b>'+snIp(m)+'</b>.',
+      snHostsStep(p)],asks:[{id:'mask',l:'Subnet mask',k:'ip',w:m},hosts]};
+  }
+  return {q:'A device is configured with the mask '+snCode(snIp(m))+'.',steps:[snMaskToPfx(m,p),snHostsStep(p)],
+    asks:[{id:'pfx',l:'Prefix length',k:'pfx',w:p},hosts]};
+}
+function snGenFit(lv){
+  if(Math.random()<.55){
+    const p=snRand(lv==='easy'?24:lv==='med'?18:10,30), hb=32-p, need=snRand(Math.max(2,2**(hb-1)-1),2**hb-2);
+    const st=['Find the smallest number of host bits <i>h</i> where '+snPow(2,'h')+' − 2 is at least '+snNum(need)+'.'];
+    st.push((hb>2?snPow(2,hb-1)+' − 2 = '+snNum(2**(hb-1)-2)+' is too small. ':'')+snPow(2,hb)+' − 2 = <b>'+snNum(2**hb-2)+'</b> fits'+(2**hb-2===need?' exactly':'')+', so <i>h</i> = '+hb+'.');
+    st.push('Prefix = 32 − '+hb+' = <b>/'+p+'</b>, which is the mask <b>'+snIp(snMask(p))+'</b>.');
+    return {q:'A segment needs <b>'+snNum(need)+' hosts</b>. What is the smallest subnet that fits?',steps:st,asks:[
+      {id:'pfx',l:'Prefix length',k:'pfx',w:p},
+      {id:'mask',l:'Subnet mask',k:'ip',w:snMask(p)},
+      {id:'hosts',l:'Usable hosts it gives',k:'num',w:2**hb-2}]};
+  }
+  const parent=lv==='easy'?24:lv==='med'?snRand(16,24):snRand(8,20);
+  const b=snRand(1,Math.min(lv==='easy'?6:lv==='med'?10:12,30-parent)), child=parent+b, need=snRand(2**(b-1)+1,2**b);
+  const base=(snBase()&snMask(parent))>>>0;
+  const st=['Find the smallest number of borrowed bits <i>b</i> where '+snPow(2,'b')+' is at least '+snNum(need)+'.',
+    (b>1?snPow(2,b-1)+' = '+snNum(2**(b-1))+' is too few. ':'')+snPow(2,b)+' = <b>'+snNum(2**b)+'</b> is enough, so <i>b</i> = '+b+'.',
+    'New prefix = '+parent+' + '+b+' = <b>/'+child+'</b>, giving '+snNum(2**b)+' subnets.',
+    snHostsStep(child,'Host bits in each /'+child)];
+  return {q:'You have '+snCode(snIp(base)+'/'+parent)+' and need at least <b>'+snNum(need)+' subnets</b>. How do you split it?',steps:st,asks:[
+    {id:'pfx',l:'New prefix length',k:'pfx',w:child},
+    {id:'subs',l:'Subnets you get',k:'num',w:2**b},
+    {id:'hosts',l:'Usable hosts per subnet',k:'num',w:2**(32-child)-2}]};
+}
+function snGen(t,lv){
+  let k=t;
+  if(k==='mix'){ const r=Math.random(); k=r<.34?'subnet':r<.48?'hosts':r<.68?'count':r<.82?'mask':'fit'; }
+  const lo=SN_LEVELS.find(l=>l.k===lv).lo;
+  const p=k==='subnet'?snGenSubnet(lo):k==='hosts'?snGenHosts(lo):k==='count'?snGenCount(lv):k==='mask'?snGenMask(lo):snGenFit(lv);
+  p.t=k; p.lv=lv; return p;
+}
+
+// ── Answers ────────────────────────────────────────────────────────
+function snParseIp(v){
+  const m=String(v||'').trim().match(/^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/); if(!m) return null;
+  const o=m.slice(1).map(Number); return o.some(x=>x>255)?null:snIpInt(o[0],o[1],o[2],o[3]);
+}
+function snParseNum(v){ const t=String(v||'').replace(/[,\s_]/g,''); return /^\d+$/.test(t)?Number(t):null; }
+function snParsePfx(v){ const t=String(v||'').trim().replace(/^\//,''); return /^\d{1,2}$/.test(t)?Number(t):null; }
+const snOk=(a,v)=>(a.k==='ip'?snParseIp(v):a.k==='pfx'?snParsePfx(v):snParseNum(v))===a.w;
+const snFmt=a=>a.k==='ip'?snIp(a.w):a.k==='pfx'?'/'+a.w:snNum(a.w);
+const snPh=k=>k==='ip'?'x.x.x.x':k==='pfx'?'nn':'number';
+
+function snNew(S2){
+  const sn=S2.sn; sn.p=snGen(snType(),snLevel()); sn.vals={}; sn.res=null; sn.t0=Date.now(); sn.seq=(sn.seq||0)+1;
+}
+function snCheck(shown){
+  const L=labById(ui.lab), S2=ui.labS, sn=S2&&S2.sn; if(!sn||sn.res) return;
+  const p=sn.p, per={}; let hit=0;
+  p.asks.forEach(a=>{ const ok=!shown&&snOk(a,sn.vals[a.id]); per[a.id]=ok; if(ok) hit++; });
+  const ok=!shown&&hit===p.asks.length;
+  sn.res={per,hit,ok,shown:!!shown,secs:Math.round((Date.now()-sn.t0)/1000)};
+
+  const rec=Object.assign({done:false,best:0,tries:0},P.labs[L.id]||{});
+  rec.tries=(rec.tries||0)+1; rec.solved=(rec.solved||0)+(ok?1:0);
+  rec.streak=ok?(rec.streak||0)+1:0; rec.best=Math.max(rec.best||0,rec.streak);
+  rec.by=Object.assign({},rec.by); const b=rec.by[p.t]=Object.assign({c:0,n:0},rec.by[p.t]); b.n++; if(ok) b.c++;
+  const first=!rec.done&&rec.solved>=SN_DONE; rec.done=rec.done||rec.solved>=SN_DONE; rec.at=Date.now();
+  P.labs[L.id]=rec;
+  sn.sess.n++; if(ok) sn.sess.c++;
+  if(ok){ P.xp+=SN_XP+(first?45:0); bumpStreak(); }
+  saveP();
+  if(!shown) beep(ok);
+  snPaint(false);
+  if(first) toast('Subnetting lab complete — +'+(SN_XP+45)+' XP');
+  else if(ok) toast(rec.streak>=3?rec.streak+' in a row — +'+SN_XP+' XP':'+'+SN_XP+' XP');
+  if(TAPW==='click'){ const n=document.getElementById('snNext'); if(n) n.focus({preventScroll:true}); }
+}
+function snNext(){ snNew(ui.labS); snPaint(true); }
+
+// ── Views ──────────────────────────────────────────────────────────
+function snRunner(L){
+  const r=labRec(L.id);
+  return '<div class="page-head"><div><div class="page-title">'+esc(L.title)+'</div>'+
+    '<div class="page-sub">Domain '+L.domain+' · '+esc(CERT.domains[L.domain].name)+' · '+labKindName(L.type)+'</div></div>'+
+    '<div class="page-head-right">'+(r.done?'<span class="chip ok">'+ICON.check+'Completed</span>':'')+
+      '<button class="btn btn-sm" id="labReset">'+ICON.reset+'New session</button>'+
+      '<button class="btn btn-sm" id="labBack">'+ICON.left+'All labs</button></div></div>'+
+    '<div class="grid g-main"><div class="stack">'+
+      '<div class="scenario">'+L.scenario+'</div>'+
+      '<div class="sn-bar" id="snBar">'+snBarHtml()+'</div>'+
+      '<div class="card card-pad sn-card" id="snCard">'+snCardHtml(ui.labS)+'</div>'+
+    '</div><div class="stack">'+
+      '<div class="card card-pad" id="snSide">'+snSideHtml(L)+'</div>'+
+      '<div class="card card-pad"><div class="sec-title">'+ICON.book+'The method</div><div class="hint-box sn-method">'+
+        '<div><b>Size</b> (one prefix given): host bits = 32 − prefix, usable hosts = 2<sup>h</sup> − 2.</div>'+
+        '<div><b>Count</b> (two prefixes given): borrowed bits = new − old, subnets = 2<sup>b</sup>.</div>'+
+        '<div><b>Find the subnet</b>: block size = 256 − the mask octet. The network is the largest boundary at or below the host\'s octet; the broadcast is network + block − 1.</div>'+
+        '<div><b>Mask octets</b>: 128 · 192 · 224 · 240 · 248 · 252 · 254 · 255</div>'+
+      '</div></div>'+
+    '</div></div>';
+}
+function snBarHtml(){
+  const t=snType(), lv=snLevel();
+  return '<div class="chip-row">'+SN_TYPES.map(x=>'<button class="chip '+(x.k===t?'on':'')+'" data-snt="'+x.k+'">'+x.l+'</button>').join('')+'</div>'+
+    '<div class="seg" title="Which prefixes the problems use">'+SN_LEVELS.map(x=>'<button data-snl="'+x.k+'" class="'+(x.k===lv?'on':'')+'">'+x.l+'</button>').join('')+'</div>';
+}
+function snCardHtml(S2){
+  const sn=S2.sn, p=sn.p, res=sn.res, n=p.asks.length;
+  let h='<div class="sn-top"><span class="chip on">'+SN_TYPES.find(t=>t.k===p.t).l+'</span>'+
+    '<span class="sn-meta">Problem '+sn.seq+' · '+SN_LEVELS.find(l=>l.k===p.lv).l+'</span></div>'+
+    '<div class="sn-q">'+p.q+'</div><div class="sn-count">'+n+' parts — answer every one</div>'+
+    '<div class="fld-grid sn-grid">'+p.asks.map((a,i)=>{
+      const st=res?(res.per[a.id]?'good':'bad'):'', v=sn.vals[a.id]||'';
+      return '<label class="fld '+st+'"><span class="fld-l"><span class="sn-ltr">'+'abcdef'[i]+'</span>'+esc(a.l)+'</span>'+
+        '<input class="input sn-in" data-sn="'+a.id+'" inputmode="'+(a.k==='ip'?'decimal':'numeric')+'" enterkeyhint="'+(i<n-1?'next':'done')+'"'+
+        ' autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="'+snPh(a.k)+'" value="'+esc(v)+'"'+(res?' readonly':'')+'>'+
+        (res?'<span class="fld-msg">'+(res.per[a.id]?'Correct':(v.trim()?'Answer: ':'Not answered — answer: ')+'<b>'+snFmt(a)+'</b>')+'</span>':'')+'</label>';
+    }).join('')+'</div>';
+  if(!res){
+    h+='<div class="btn-row sn-btns"><button class="btn btn-pri" id="snCheck">'+ICON.check+'Check</button>'+
+      '<button class="btn" id="snShow">'+ICON.book+'Show me how</button>'+
+      '<button class="btn btn-ghost" id="snSkip">'+ICON.reset+'New problem</button></div>';
+    return h;
+  }
+  const t=Math.floor(res.secs/60)+':'+String(res.secs%60).padStart(2,'0');
+  h+='<div class="lab-result '+(res.ok?'pass':'fail')+'">'+(res.shown?'Here is the working. Revealed answers don\'t count toward your score.':
+    res.ok?'<b>All '+n+' parts correct</b> in '+t+'. +'+SN_XP+' XP':'<b>'+res.hit+' of '+n+' parts correct.</b> The working below shows where it went wrong.')+'</div>'+
+    '<div class="btn-row sn-btns"><button class="btn btn-pri" id="snNext">Next problem'+ICON.right+'</button></div>'+
+    '<div class="sn-work"><div class="sec-title">'+ICON.list+'How to work it out</div><ol class="sn-steps">'+p.steps.map(s=>'<li>'+s+'</li>').join('')+'</ol></div>';
+  return h;
+}
+function snSideHtml(L){
+  const r=labRec(L.id), ss=ui.labS.sn.sess, solved=r.solved||0;
+  const cell=(v,l)=>'<div><div class="sn-stat-v">'+v+'</div><div class="sn-stat-l">'+l+'</div></div>';
+  let h='<div class="sec-title">'+ICON.chart+'Your progress</div><div class="sn-stats">'+
+    cell(ss.c+'<small> / '+ss.n+'</small>','right this session')+cell(r.streak||0,'in a row now')+
+    cell(r.best||0,'best streak')+cell(solved,'solved all-time')+'</div>';
+  h+=r.done?'<div class="sn-goal ok">'+ICON.check+'Lab complete. Keep drilling for XP.</div>'
+    :'<div class="sn-goal">'+solved+' of '+SN_DONE+' solved to complete the lab</div><span class="bar"><i style="width:'+Math.min(100,solved/SN_DONE*100)+'%"></i></span>';
+  const rows=SN_TYPES.filter(t=>t.k!=='mix'&&r.by&&r.by[t.k]&&r.by[t.k].n);
+  if(rows.length) h+='<div class="sn-by"><div class="sn-stat-l">Accuracy by question type</div>'+rows.map(t=>{
+    const b=r.by[t.k], pc=Math.round(b.c/b.n*100);
+    return '<div class="sn-by-row"><span>'+t.l+'</span><span class="bar '+(pc>=75?'ok':pc>=50?'warn':'no')+'"><i style="width:'+pc+'%"></i></span><span>'+b.c+'/'+b.n+'</span></div>';
+  }).join('')+'</div>';
+  return h;
+}
+// Repaint the drill in place, so the page never jumps back to the top.
+function snPaint(scroll){
+  const L=labById(ui.lab); if(!L||!ui.labS||!ui.labS.sn) return;
+  const set=(id,h)=>{ const el=document.getElementById(id); if(el) el.innerHTML=h; };
+  set('snBar',snBarHtml()); set('snCard',snCardHtml(ui.labS)); set('snSide',snSideHtml(L));
+  snBind();
+  const c=document.getElementById('snCard');
+  if(scroll&&c){
+    const mt=document.querySelector('.mtop'), off=(mt&&mt.offsetParent!==null?mt.offsetHeight:0)+12;
+    const top=c.getBoundingClientRect().top-off; if(top<0) window.scrollBy({top,behavior:'smooth'});
+  }
+  if(scroll&&TAPW==='click'){ const f=document.querySelector('[data-sn]'); if(f) f.focus({preventScroll:true}); }
+}
+function snBind(){
+  const sn=ui.labS&&ui.labS.sn; if(!sn) return;
+  document.querySelectorAll('[data-snt]').forEach(el=>el.onclick=()=>{ S.snType=el.dataset.snt; saveS(); snNext(); });
+  document.querySelectorAll('[data-snl]').forEach(el=>el.onclick=()=>{ S.snLevel=el.dataset.snl; saveS(); snNext(); });
+  const ins=[...document.querySelectorAll('[data-sn]')];
+  ins.forEach((el,i)=>{
+    el.oninput=()=>{ sn.vals[el.dataset.sn]=el.value; };
+    el.onkeydown=e=>{ if(e.key!=='Enter') return; e.preventDefault();
+      if(sn.res) snNext(); else if(i<ins.length-1) ins[i+1].focus(); else snCheck(false); };
+  });
+  const on=(id,fn)=>{ const b=document.getElementById(id); if(b) b.onclick=fn; };
+  on('snCheck',()=>snCheck(false)); on('snShow',()=>snCheck(true)); on('snSkip',snNext); on('snNext',snNext);
+}
+
 // ── Lab lookup / progress ────────────────────────────────────────────
 const allLabs=()=>CERT.labs||[];
 const labById=id=>allLabs().find(l=>l.id===id);
@@ -7605,6 +7978,7 @@ function startLab(id){
   ui.labS={ id, out:[], sh:L.type==='cli'?newIos(L.device):null,
             vals:{}, order:L.type==='order'?shuffle(L.items.map(i=>i.id)):[],
             match:{}, sel:null, checked:false, res:null, hist:[], hi:-1 };
+  if(L.type==='subnet'){ ui.labS.sn={sess:{n:0,c:0},seq:0}; snNew(ui.labS); }
   if(L.type==='cli'){
     ui.labS.out.push({t:L.device.banner||('Connected to '+(L.device.host||'Router')+' console.'),c:'dim'});
     ui.labS.out.push({t:'Type ? for the command list. Goals update as you configure.',c:'dim'});
@@ -7628,20 +8002,21 @@ function labs(){
     const r=labRec(L.id);
     return '<button class="lab-card" data-lab="'+L.id+'">'+
       '<div class="lab-top"><span class="lab-kind">'+labKindName(L.type)+'</span>'+
-      (r.done?'<span class="lab-done">'+ICON.check+'Complete</span>':r.tries?'<span class="lab-done" style="color:var(--warn)">'+r.best+'%</span>':'')+'</div>'+
+      (r.done?'<span class="lab-done">'+ICON.check+'Complete</span>':r.tries?'<span class="lab-done" style="color:var(--warn)">'+(L.type==='subnet'?(r.solved||0)+' / '+SN_DONE:r.best+'%')+'</span>':'')+'</div>'+
       '<div class="lab-name">'+esc(L.title)+'</div>'+
       '<div class="lab-desc">'+esc(L.blurb)+'</div>'+
-      '<div class="lab-meta"><span>Domain '+L.domain+'</span><span>~'+L.est+' min</span>'+
-      (r.tries?'<span>'+r.tries+' attempt'+(r.tries===1?'':'s')+'</span>':'')+'</div></button>';
+      '<div class="lab-meta"><span>Domain '+L.domain+'</span><span>'+(L.type==='subnet'?'Endless':'~'+L.est+' min')+'</span>'+
+      (r.tries?'<span>'+r.tries+(L.type==='subnet'?' problem':' attempt')+(r.tries===1?'':'s')+'</span>':'')+'</div></button>';
   }).join('')+'</div>';
   return h;
 }
 function labKindName(t){
-  return t==='cli'?'Device config':t==='fields'?'Fill in':t==='order'?'Sequence':t==='match'?'Drag & drop':'Build rules';
+  return t==='subnet'?'Random drill':t==='cli'?'Device config':t==='fields'?'Fill in':t==='order'?'Sequence':t==='match'?'Drag & drop':'Build rules';
 }
 
 function labRunner(){
   const L=labById(ui.lab), S2=ui.labS, r=labRec(L.id);
+  if(L.type==='subnet') return snRunner(L);
   let h='<div class="page-head"><div><div class="page-title">'+esc(L.title)+'</div>'+
     '<div class="page-sub">Domain '+L.domain+' · '+esc(CERT.domains[L.domain].name)+' · '+labKindName(L.type)+'</div></div>'+
     '<div class="page-head-right">'+
@@ -7829,10 +8204,11 @@ function bindLabCheck(){ const b=document.getElementById('labCheck'); if(b) b.on
 function bindLabs(){
   document.querySelectorAll('[data-lab]').forEach(el=>el.onclick=()=>{ startLab(el.dataset.lab); render(); });
   const back=document.getElementById('labBack'); if(back) back.onclick=()=>{ ui.lab=null; ui.labS=null; render(); };
-  const rst=document.getElementById('labReset'); if(rst) rst.onclick=()=>{ startLab(ui.lab); render(); toast('Lab reset'); };
+  const rst=document.getElementById('labReset'); if(rst) rst.onclick=()=>{ startLab(ui.lab); render(); toast(ui.labS&&ui.labS.sn?'New session started':'Lab reset'); };
   bindLabCheck();
   if(!ui.lab) return;
   const L=labById(ui.lab), S2=ui.labS; if(!L) return;
+  if(L.type==='subnet'){ snBind(); return; }
 
   if(L.type==='cli'){
     const inp=document.getElementById('labCmd');
